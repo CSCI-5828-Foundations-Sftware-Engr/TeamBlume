@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "Admin@123"
+      POSTGRES_USER: admin
+      POSTGRES_DB: pacom
+    ports:
+      - 5433:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
