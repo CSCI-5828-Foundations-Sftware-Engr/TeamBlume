@@ -13,10 +13,22 @@ exports.signup = (req, res) => {
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
   })
-    .then((user) => {
+    .then(async (user) => {
       if (user) {
+        let token = jwt.sign(
+          { id: user.id, email: user.email },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: 54000, // 24 hours
+          },
+        );
+
+        let refreshToken = await RefreshToken.createToken(user);
         // send message as json
-        res.status(200).send({ message: 'User was registered successfully!' });
+        res.status(200).send({
+          token: token,
+          refreshToken: refreshToken,
+        });
       }
     })
     .catch((err) => {
@@ -38,18 +50,17 @@ exports.signin = (req, res) => {
 
       if (!passwordIsValid) {
         return res.status(401).send({
-          accessToken: null,
+          token: null,
           message: 'Invalid Password!',
         });
       }
 
       console.log(user.toJSON());
-      console.log(process.env.JWT_SECRET);
       let token = jwt.sign(
         { id: user.id, email: user.email },
         process.env.JWT_SECRET,
         {
-          expiresIn: 86400, // 24 hours
+          expiresIn: 54000, // 24 hours
         },
       );
 
@@ -59,7 +70,7 @@ exports.signin = (req, res) => {
         id: user.id,
         username: user.userName,
         email: user.email,
-        accessToken: token,
+        token: token,
         refreshToken: refreshToken,
       });
     })
@@ -97,15 +108,38 @@ exports.refreshToken = async (req, res) => {
     }
 
     const user = await refreshToken.getUser();
-    let newAccessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: config.jwtExpiration,
-    });
+    let newAccessToken = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: 54000,
+      },
+    );
 
     return res.status(200).json({
-      accessToken: newAccessToken,
+      token: newAccessToken,
       refreshToken: refreshToken.token,
     });
   } catch (err) {
     return res.status(500).send({ message: err });
   }
+};
+
+exports.logout = async (req, res) => {
+  let userId = req.userId;
+  User.findOne({ where: { id: userId } })
+    .then(async (user) => {
+      if (!user) {
+        return res.status(404).send({ message: 'User Not found.' });
+      }
+
+      await RefreshToken.destroy({ where: { userId: userId } });
+
+      res.status(200).send({
+        message: 'User logged out successfully!',
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
 };

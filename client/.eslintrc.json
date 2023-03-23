@@ -1,0 +1,27 @@
+{
+    "env": {
+        "commonjs": true,
+        "es2021": true,
+        "browser": true
+    },
+    "extends": ["prettier", "plugin:react/recommended"],
+    "overrides": [
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": ["prettier", "react"],
+    "rules": {
+        "prettier/prettier": "error",
+        "no-unused-vars": "warn",
+        "no-console": "off",
+        "func-names": "off",
+        "no-plusplus": "off",
+        "no-process-exit": "off",
+        "class-methods-use-this": "off"
+    }
+}
