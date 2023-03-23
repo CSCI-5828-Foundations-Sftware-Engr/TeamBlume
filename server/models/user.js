@@ -9,7 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.belongsTo(models.Session);
+      User.hasOne(models.RefreshToken, {
+        foreignKey: 'userId',
+        targetKey: 'id',
+      });
     }
   }
   User.init(
@@ -18,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
       email: DataTypes.STRING,
+      password: DataTypes.STRING,
     },
     {
       sequelize,

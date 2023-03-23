@@ -9,14 +9,9 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    return queryInterface.addColumn('Users', 'SessionID', {
-      type: Sequelize.INTEGER,
-      references: {
-        model: 'Sessions',
-        key: 'id',
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL',
+    // Type for password
+    return queryInterface.addColumn('Users', 'Password', {
+      type: Sequelize.STRING,
     });
   },
 
@@ -29,7 +24,7 @@ module.exports = {
      */
     return queryInterface.removeColumn(
       'Users', // name of Source model
-      'SessionID', // key we want to remove
+      'Password', // key we want to remove
     );
   },
 };
