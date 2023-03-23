@@ -1,9 +1,9 @@
-const db = require('../models');
-
-const { User: User, RefreshToken: RefreshToken } = db;
-
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+
+const db = require('../models');
+
+const { User, RefreshToken } = db;
 
 exports.signup = (req, res) => {
   User.create({
@@ -15,7 +15,7 @@ exports.signup = (req, res) => {
   })
     .then(async (user) => {
       if (user) {
-        let token = jwt.sign(
+        const token = jwt.sign(
           { id: user.id, email: user.email },
           process.env.JWT_SECRET,
           {
@@ -23,11 +23,11 @@ exports.signup = (req, res) => {
           },
         );
 
-        let refreshToken = await RefreshToken.createToken(user);
+        const refreshToken = await RefreshToken.createToken(user);
         // send message as json
         res.status(200).send({
-          token: token,
-          refreshToken: refreshToken,
+          token,
+          refreshToken,
         });
       }
     })
@@ -43,7 +43,7 @@ exports.signin = (req, res) => {
         return res.status(404).send({ message: 'User Not found.' });
       }
 
-      let passwordIsValid = bcrypt.compareSync(
+      const passwordIsValid = bcrypt.compareSync(
         req.body.password,
         user.password,
       );
@@ -56,7 +56,7 @@ exports.signin = (req, res) => {
       }
 
       console.log(user.toJSON());
-      let token = jwt.sign(
+      const token = jwt.sign(
         { id: user.id, email: user.email },
         process.env.JWT_SECRET,
         {
@@ -64,14 +64,14 @@ exports.signin = (req, res) => {
         },
       );
 
-      let refreshToken = await RefreshToken.createToken(user);
+      const refreshToken = await RefreshToken.createToken(user);
 
       res.status(200).send({
         id: user.id,
         username: user.userName,
         email: user.email,
-        token: token,
-        refreshToken: refreshToken,
+        token,
+        refreshToken,
       });
     })
     .catch((err) => {
@@ -87,7 +87,7 @@ exports.refreshToken = async (req, res) => {
   }
 
   try {
-    let refreshToken = await RefreshToken.findOne({
+    const refreshToken = await RefreshToken.findOne({
       where: { token: requestToken },
     });
 
@@ -108,7 +108,7 @@ exports.refreshToken = async (req, res) => {
     }
 
     const user = await refreshToken.getUser();
-    let newAccessToken = jwt.sign(
+    const newAccessToken = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET,
       {
@@ -126,14 +126,14 @@ exports.refreshToken = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-  let userId = req.userId;
+  const { userId } = req;
   User.findOne({ where: { id: userId } })
     .then(async (user) => {
       if (!user) {
         return res.status(404).send({ message: 'User Not found.' });
       }
 
-      await RefreshToken.destroy({ where: { userId: userId } });
+      await RefreshToken.destroy({ where: { userId } });
 
       res.status(200).send({
         message: 'User logged out successfully!',

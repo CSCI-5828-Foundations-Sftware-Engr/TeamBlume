@@ -1,15 +1,15 @@
 const jwt = require('jsonwebtoken');
-const db = require('../models');
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const { JWT_SECRET } = process.env;
 
-verifyToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
   // get token from Authorization header
   console.log(req.headers);
-  let token = req.headers['authorization'];
+  let token = req.headers.authorization;
   // remove 'Bearer ' from token
   const tokenParts = token.split(' ');
-  token = tokenParts[1];
+  // use array destructuring to get the second element
+  [, token] = tokenParts;
 
   console.log(token);
 
@@ -33,7 +33,7 @@ verifyToken = (req, res, next) => {
 };
 
 const authJwt = {
-  verifyToken: verifyToken,
+  verifyToken,
 };
 
 module.exports = authJwt;

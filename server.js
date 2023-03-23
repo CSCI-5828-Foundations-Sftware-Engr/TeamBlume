@@ -18,7 +18,7 @@ const whitelist = process.env.WHITELISTED_DOMAINS
   : [];
 
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin(origin, callback) {
     if (!origin || whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -39,14 +39,14 @@ db.sequelize.sync().then(() => {
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 require('./controller/auth.routes')(app);
 require('./controller/user.routes')(app);
 
-const server = app.listen(process.env.PORT || 8081, function () {
-  const port = server.address().port;
+const server = app.listen(process.env.PORT || 8081, () => {
+  const { port } = server.address();
   console.log('App started at port:', port);
 });

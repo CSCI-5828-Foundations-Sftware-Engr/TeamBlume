@@ -1,6 +1,6 @@
 const db = require('../models');
 
-const { User: User } = db;
+const { User } = db;
 
 exports.userBoard = (req, res) => {
   res.status(200).send('User Content.');

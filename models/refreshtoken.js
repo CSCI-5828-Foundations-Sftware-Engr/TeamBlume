@@ -28,22 +28,22 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   RefreshToken.createToken = async function (user) {
-    let expiredAt = new Date();
+    const expiredAt = new Date();
 
     expiredAt.setSeconds(
       expiredAt.getSeconds() + process.env.REFRESH_TOKEN_EXPIRY,
     );
 
-    let _token = jwt.sign(
+    const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.REFRESH_TOKEN_SECRET,
       {
-        expiresIn: eval(process.env.REFRESH_TOKEN_EXPIRY),
+        expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
       },
     );
 
-    let refreshToken = await this.create({
-      token: _token,
+    const refreshToken = await this.create({
+      token,
       userId: user.id,
       expiryDate: expiredAt.getTime(),
     });
@@ -51,9 +51,8 @@ module.exports = (sequelize, DataTypes) => {
     return refreshToken.token;
   };
 
-  RefreshToken.verifyExpiration = (token) => {
-    return token.expiryDate.getTime() < new Date().getTime();
-  };
+  RefreshToken.verifyExpiration = (token) =>
+    token.expiryDate.getTime() < new Date().getTime();
 
   return RefreshToken;
 };
