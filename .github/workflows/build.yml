@@ -6,11 +6,73 @@ on:
   pull_request:
     branches:
       - master
+env:
+  PROJECT_ID: provenance-380200
+  SERVICE_NAME: pacom
 jobs:
-  build:
+  build-backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 18.x
+      - run: npm ci
+      - run: npm run lint
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - run: | 
+          cd client
+          npm ci
+      - run: npm run build
+  
+  code-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Make .env
+        env: 
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+          REFRESH_TOKEN_EXPIRY:  ${{ secrets.REFRESH_TOKEN_EXPIRY }}
+        run: |
+          tee .env <<EOF
+          DB_HOST=$DB_HOST
+          DB_USER=$DB_USER
+          DB_PASS=$DB_PASSWORD
+          DB_NAME=$DB_NAME
+          COOKIE_SECRET=$COOKIE_SECRET
+          JWT_SECRET=$JWT_SECRET
+          REFRESH_TOKEN_SECRET=$REFRESH_TOKEN_SECRET
+          REFRESH_TOKEN_EXPIRY=$REFRESH_TOKEN_EXPIRY
+          NODE_ENV=production
+          EOF
+      - name: GCP Build
+        id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIAL }}'
+          service_account: 'provenance-service@provenance-380200.iam.gserviceaccount.com'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+      - name: Submit build to Cloud Build Staging
+        continue-on-error: true
+        run: |
+          gcloud builds submit --quiet --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA-staging"
+      - name: Deploy to Cloud Run production
+        run: |
+          gcloud run deploy pacom --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA-staging" --platform managed --region us-central1 --allow-unauthenticated --quiet
+    
