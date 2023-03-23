@@ -7,7 +7,7 @@ const Welcome = () => {
   const [userContext, setUserContext] = useContext(UserContext);
 
   const fetchUserDetails = useCallback(() => {
-    fetch(process.env.REACT_APP_API_ENDPOINT + '/api/user/me', {
+    fetch(window.location.origin + '/api/user/me', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

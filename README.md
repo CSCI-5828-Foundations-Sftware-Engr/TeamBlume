@@ -1,6 +1,6 @@
 # TeamBlume
 
-## This project's aim is to create a price comparison web app to cmpare prices for goods in some categories across multiple e-commerce apps
+This project's aim is to create a price comparison web app to cmpare prices for goods in some categories across multiple e-commerce apps
 
 ## Architecture Diagram
 

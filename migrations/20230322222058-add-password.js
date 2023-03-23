@@ -9,7 +9,7 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     // Type for password
-    return queryInterface.addColumn('Users', 'Password', {
+    return queryInterface.addColumn('Users', 'password', {
       type: Sequelize.STRING,
     });
   },
@@ -23,7 +23,7 @@ module.exports = {
      */
     return queryInterface.removeColumn(
       'Users', // name of Source model
-      'Password', // key we want to remove
+      'password', // key we want to remove
     );
   },
 };
