@@ -26,10 +26,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - run: | 
+      - name: Run yarn build
+        run: | 
           cd client
           yarn
-      - run: yarn build
+          yarn build
   
   code-build:
     runs-on: ubuntu-latest
