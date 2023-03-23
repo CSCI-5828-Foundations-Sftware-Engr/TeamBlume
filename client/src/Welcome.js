@@ -50,7 +50,7 @@ const Welcome = () => {
   };
 
   const logoutHandler = () => {
-    fetch(process.env.REACT_APP_API_ENDPOINT + '/api/auth/signout', {
+    fetch(window.location.origin + '/api/auth/signout', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${userContext.token}`,

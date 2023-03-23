@@ -14,7 +14,9 @@ services:
   app:
     depends_on:
       - db
-    build: ./server
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     restart: unless-stopped
     ports:
       - 8081:8081

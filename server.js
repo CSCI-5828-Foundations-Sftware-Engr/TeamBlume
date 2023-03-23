@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 require('dotenv').config();
 
@@ -36,8 +37,10 @@ db.sequelize.sync().then(() => {
   console.log('Sync Database');
 });
 
+app.use(express.static(path.join(__dirname, 'build')));
+
 app.get('/', function (req, res) {
-  res.send({ status: 'success' });
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 require('./controller/auth.routes')(app);
