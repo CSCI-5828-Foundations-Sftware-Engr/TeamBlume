@@ -1,2 +1,5 @@
-client
 data
+node_modules/*
+client/node_modules
+client/build
+.yarn
