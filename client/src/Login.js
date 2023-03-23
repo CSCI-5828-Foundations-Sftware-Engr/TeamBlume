@@ -7,6 +7,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  /* eslint-disable no-unused-vars */
   const [userContext, setUserContext] = useContext(UserContext);
 
   const formSubmitHandler = (e) => {

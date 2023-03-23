@@ -21,7 +21,7 @@ module.exports = {
     sourceType: 'module',
     allowImportExportEverywhere: true,
   },
-  plugins: ['react', 'prettier'],
+  plugins: ['react', 'prettier', 'jsx'],
   rules: {
     'prettier/prettier': 'error',
     'no-nested-ternary': 0,

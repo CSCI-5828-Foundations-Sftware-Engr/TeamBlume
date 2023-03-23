@@ -10,6 +10,7 @@ const Register = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [username, setUsername] = useState();
+  /* eslint-disable no-unused-vars */
   const [userContext, setUserContext] = useContext(UserContext);
 
   const formHandlerSubmit = (e) => {
