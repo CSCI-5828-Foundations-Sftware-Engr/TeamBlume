@@ -29,7 +29,7 @@ jobs:
       - run: | 
           cd client
           yarn
-      - run: yarn run build
+      - run: yarn build
   
   code-build:
     runs-on: ubuntu-latest
@@ -48,6 +48,7 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
           REFRESH_TOKEN_EXPIRY:  ${{ secrets.REFRESH_TOKEN_EXPIRY }}
+          WHITELISTED_DOMAINS: ${{ secrets.WHITELISTED_DOMAINS }}
         run: |
           tee .env <<EOF
           DB_HOST=$DB_HOST
@@ -58,6 +59,7 @@ jobs:
           JWT_SECRET=$JWT_SECRET
           REFRESH_TOKEN_SECRET=$REFRESH_TOKEN_SECRET
           REFRESH_TOKEN_EXPIRY=$REFRESH_TOKEN_EXPIRY
+          WHITELISTED_DOMAINS=$WHITELISTED_DOMAINS
           NODE_ENV=production
           EOF
       - name: GCP Build
