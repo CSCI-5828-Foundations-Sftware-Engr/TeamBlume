@@ -5,9 +5,7 @@ export default function Footer() {
       <div className="">
         <span className="text-sm">Copyright PACom</span>
       </div>
-      <div className="flex-end flex">
-        
-      </div>
+      <div className="flex-end flex"></div>
     </div>
-  )
+  );
 }
