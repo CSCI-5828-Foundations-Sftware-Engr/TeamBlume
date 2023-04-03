@@ -1,4 +1,4 @@
-name: Build next.js
+name: Build
 on:
   push:
     branches:
