@@ -3,9 +3,7 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
+
 env:
   PROJECT_ID: provenance-380200
   SERVICE_NAME: pacom
