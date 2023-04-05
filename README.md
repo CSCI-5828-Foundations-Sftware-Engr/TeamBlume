@@ -2,7 +2,7 @@
 
 Price aggregator and comparator for products from different retailers like Walmart, Best Buy, Amazon, Costco etc. It also analyses various product trends and predicts the price over the future to help users make informed purchasing decisions.
 
-The web application collects the information of different prodicts and prices by scraping websites from various retailers. This information would be stored in the Postgres database and presented to the users along with a detailed analysis.
+The web application uses Axios and Cheerio to collect the information of different prodicts and prices by scraping websites from various retailers. This information would be stored in the Postgres database and presented to the users along with a detailed analysis.
 
 Users could then compare the prices of the same product across different retailers and make an informed decision on where to purchase it. In addition, the tool could also provide insights into product trends, such as which products are becoming more popular or which ones are expected to decrease in price in the future.
 
