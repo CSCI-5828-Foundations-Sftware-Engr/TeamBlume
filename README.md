@@ -18,6 +18,9 @@ Our application will be deployed on GloudCloud Platform.
 
 Design Decisions:
 
+![image](https://user-images.githubusercontent.com/32598162/227116584-a8e915ae-e411-40f0-8736-6341214471d4.png)
+(Please explain the diagram and why we preferrred)
+
 We use Github projects to keep track of our tasks and user stories.
 
 Work Distribution: 
@@ -28,34 +31,3 @@ Work Distribution:
  - Ashwin Ravindra - 
 
 
-## Getting Started
-
-### Local
-
-- First, install the dependencies using yarn:
-
-```bash
-yarn
-```
-
-- Next, create `.env` file in the root directory and add the following environment variables:
-
-```bash
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-```
-
-- Finally, run the development server:
-
-```bash
-yarn dev
-```
-
-### Docker
-
-To run the app using docker, run the following commands:
-
-```bash
-docker build -t teamblume .
-docker run -p 3000:3000 teamblume
-```
