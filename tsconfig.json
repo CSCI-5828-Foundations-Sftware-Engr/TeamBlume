@@ -24,7 +24,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "supabase/functions/data-aggregator/index.js"  ],
   "exclude": [
     "node_modules"
   ]
