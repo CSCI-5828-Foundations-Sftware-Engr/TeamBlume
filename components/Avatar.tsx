@@ -38,7 +38,7 @@ export default function Avatar({
     }
 
     if (url) downloadImage(url);
-  }, [url, supabase.storage]);
+  }, [url, avatarUrl, supabase.storage]);
 
   const uploadAvatar: React.ChangeEventHandler<
     HTMLInputElement

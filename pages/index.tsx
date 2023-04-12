@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react';
-import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useSession, useSupabaseClient, Session } from '@supabase/auth-helpers-react';
+import { useState } from 'react';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -12,8 +13,17 @@ import { Button } from '@nextui-org/react';
 import Router from 'next/router';
 
 const Home: NextPage = () => {
-  const session = useSession();
+
+  const sessionVar = useSession();
   const supabase = useSupabaseClient();
+
+  const [session, setSession] = useState(useSession());
+  const [showAccount, setShowAccount] = useState(false);
+
+  if(session != sessionVar){
+    setSession(sessionVar);
+  }
+
   const menuItems = [
     { key: "electronics", name: "Electronics" },
     { key: "groceries", name: "Groceries" },
@@ -33,7 +43,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Price comparison and aggregator" />
       </Head>
       {session ? <Header session={session}/> : <></>}
-      <div className="container">
+      <div className="global-container" id="global-container">
         <div className={session ? "content-container" : "container"} style={{ padding: '50px 0 100px 0' }}>
           {!session ? (
             <div className="row">

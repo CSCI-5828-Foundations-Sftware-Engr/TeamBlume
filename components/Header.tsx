@@ -3,7 +3,11 @@ import Link from 'next/link'
 
 import HeaderUserOptions from './HeaderUserOptions';
 
-export default function Header({session} : {session:Session}) {
+interface Props {
+    session : Session;
+}
+
+const Header = ({session} : Props) => {
 
     return (
       <div className="global-header">
@@ -22,4 +26,6 @@ export default function Header({session} : {session:Session}) {
         }
       </div>
     );
-  }
+}
+
+export default Header;

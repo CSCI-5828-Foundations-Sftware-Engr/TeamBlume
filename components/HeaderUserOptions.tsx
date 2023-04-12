@@ -4,14 +4,31 @@ import AccountDetails from './AccountDetails';
 import AccountImage from './AccountImage';
 import { Database } from '../utils/database.types';
 
-import Link from 'next/link'
-import { Dropdown, Text, Grid, User } from "@nextui-org/react";
+import { useRouter } from "next/router";
 
-export default function HeaderUserOptions({session} : {session:Session}) {
+import Link from 'next/link'
+// import { Link } from "react-router-dom";
+// import Link from "react-dom/client";
+
+import { Dropdown, Text, Grid, User } from "@nextui-org/react";
+import Account from '../pages/auth/Account';
+
+interface Props {
+    session : Session;
+}
+
+
+const HeaderUserOptions = ({session} : Props) => {
 
     const supabase = useSupabaseClient<Database>();
     const accountDetails = AccountDetails({session}) || "";
     const avatarImg = AccountImage({avatar_url : (accountDetails.avatar_url!=null ? accountDetails.avatar_url : "")}) || "";
+    const router = useRouter();
+
+    // function reloadAccountPage(){
+    //     console.log(<Account session={session} />);
+    //     document.getElementById('global-container').innerHTML = <Account session={session} />;
+    // }
 
     return (
         <Grid.Container justify="flex-start" gap={2}>
@@ -38,7 +55,9 @@ export default function HeaderUserOptions({session} : {session:Session}) {
                     </Text>
                     </Dropdown.Item>
                     <Dropdown.Item key="account" color="primary" withDivider textValue='account edit page'>
-                    <Link href='/auth/Account'><div color="inherit" className="header_dropdown_option">Account</div></Link>
+                    <Link href='/auth/Account' ><div color="inherit" className="header_dropdown_option">Account</div></Link>
+                    {/* <Link to="/auth/Account"><div color="inherit" className="header_dropdown_option">Account</div></Link> */}
+                    {/* <div color="inherit" className="header_dropdown_option" onClick={()=>{}>Account 2</div> */}
                     </Dropdown.Item>
                     <Dropdown.Item key="logout" color="error" withDivider textValue='logout'>
                     <div color="inherit" className="header_dropdown_option" onClick={()=>{supabase.auth.signOut();}}>Log Out</div>
@@ -50,3 +69,5 @@ export default function HeaderUserOptions({session} : {session:Session}) {
     );
 
 }
+
+export default HeaderUserOptions;

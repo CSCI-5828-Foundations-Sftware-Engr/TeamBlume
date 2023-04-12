@@ -9,7 +9,11 @@ import {
 import { Database } from '../utils/database.types';
 type Profiles = Database['public']['Tables']['profiles']['Row'];
 
-export default function AccountDetails({session} : {session : Session}){
+interface Props {
+    session : Session;
+}
+
+const AccountDetails = ({session} : Props) => {
     const supabase = useSupabaseClient<Database>();
     const user = useUser();
     const [loading, setLoading] = useState(true);
@@ -53,3 +57,5 @@ export default function AccountDetails({session} : {session : Session}){
     return ({username, avatar_url});
 
 }
+
+export default AccountDetails;

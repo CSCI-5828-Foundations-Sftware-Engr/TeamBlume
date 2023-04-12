@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import {
   useUser,
   useSupabaseClient,
-  Session,
   useSession
 } from '@supabase/auth-helpers-react';
 import Avatar from '../../components/Avatar';
@@ -12,15 +11,12 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 import { Database } from '../../utils/database.types';
-import AccountDetails from '../../components/AccountDetails';
 type Profiles = Database['public']['Tables']['profiles']['Row'];
 
-export default function Account({ session }: { session: Session }) {
-  const router = useRouter();
+export default function Account() {
 
-  if(!session){
-    session = useSession();
-  }
+  const router = useRouter();
+  const session = useSession(); 
 
   const supabase = useSupabaseClient<Database>();
   const user = useUser();
@@ -67,7 +63,7 @@ export default function Account({ session }: { session: Session }) {
     }
 
     getProfile();
-  }, [session, user, supabase]);
+  }, [session, user, supabase, router]);
 
   async function updateProfile({
     username,
@@ -166,3 +162,5 @@ export default function Account({ session }: { session: Session }) {
     <Footer /></>
   );
 }
+
+// export default Account;
