@@ -255,6 +255,7 @@ button.primary,
 .button.primary {
   background-color: var(--custom-color-brand);
   border: 1px solid var(--custom-color-brand);
+  margin: 0.625rem 0rem;
 }
 
 /* Widgets */

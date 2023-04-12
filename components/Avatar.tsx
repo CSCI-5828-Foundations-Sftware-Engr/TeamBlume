@@ -21,17 +21,19 @@ export default function Avatar({
 
   useEffect(() => {
     async function downloadImage(path: string) {
-      try {
-        const { data, error } = await supabase.storage
-          .from('avatars')
-          .download(path);
-        if (error) {
-          throw error;
+      if(!avatarUrl){
+        try {
+          const { data, error } = await supabase.storage
+            .from('avatars')
+            .download(path);
+          if (error) {
+            throw error;
+          }
+          const url = URL.createObjectURL(data);
+          setAvatarUrl(url);
+        } catch (error) {
+          console.log('Error downloading image: ', error);
         }
-        const url = URL.createObjectURL(data);
-        setAvatarUrl(url);
-      } catch (error) {
-        console.log('Error downloading image: ', error);
       }
     }
 
@@ -77,7 +79,8 @@ export default function Avatar({
           src={avatarUrl}
           alt="Avatar"
           className="avatar image"
-          style={{ height: size, width: size }}
+          height={size}
+          width={size}
         />
       ) : (
         <div
@@ -87,7 +90,7 @@ export default function Avatar({
       )}
       <div style={{ width: size }}>
         <label className="button primary block" htmlFor="single">
-          {uploading ? 'Uploading ...' : 'Upload'}
+          {uploading ? 'Uploading ...' : (avatarUrl ? 'Update Image' : 'Upload Image')}
         </label>
         <input
           style={{
