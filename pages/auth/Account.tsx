@@ -2,25 +2,41 @@ import { useState, useEffect } from 'react';
 import {
   useUser,
   useSupabaseClient,
-  Session
+  useSession
 } from '@supabase/auth-helpers-react';
-import Avatar from './Avatar';
+import Avatar from '../../components/Avatar';
+import { useRouter } from "next/router";
+import Head from 'next/head';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
-import { Database } from '../utils/database.types';
+import { Database } from '../../utils/database.types';
 type Profiles = Database['public']['Tables']['profiles']['Row'];
 
-export default function Account({ session }: { session: Session }) {
+export default function Account() {
+
+  const router = useRouter();
+  const session = useSession(); 
+
   const supabase = useSupabaseClient<Database>();
   const user = useUser();
+
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState<Profiles['username']>(null);
   const [website, setWebsite] = useState<Profiles['website']>(null);
   const [avatar_url, setAvatarUrl] = useState<Profiles['avatar_url']>(null);
 
+  
   useEffect(() => {
     async function getProfile() {
       try {
         setLoading(true);
+
+        if(!session){
+          console.log('Error grabbing session')
+          return router.push("/");
+        }
+
         if (!user) throw new Error('No user');
 
         let { data, error, status } = await supabase
@@ -47,7 +63,7 @@ export default function Account({ session }: { session: Session }) {
     }
 
     getProfile();
-  }, [session, user, supabase]);
+  }, [session, user, supabase, router]);
 
   async function updateProfile({
     username,
@@ -82,7 +98,18 @@ export default function Account({ session }: { session: Session }) {
   }
 
   return (
+    <>
+    <Head>
+      <title>PACom</title>
+      <meta name="description" content="Price comparison and aggregator" />
+    </Head>
+    <Header session={session}/>
+    {session ? (
+    <div className="account-container">
+    <div className="row">
+    <div className="col-12">
     <div className="form-widget">
+      <div className="avatar-container">
       <Avatar
         uid={user!.id}
         url={avatar_url}
@@ -92,6 +119,7 @@ export default function Account({ session }: { session: Session }) {
           updateProfile({ username, website, avatar_url: url });
         }}
       />
+      </div>
       <div>
         <label htmlFor="email">Email</label>
         <input id="email" type="text" value={session.user.email} disabled />
@@ -125,14 +153,14 @@ export default function Account({ session }: { session: Session }) {
         </button>
       </div>
 
-      <div>
-        <button
-          className="button block"
-          onClick={() => supabase.auth.signOut()}
-        >
-          Sign Out
-        </button>
-      </div>
     </div>
+    </div>
+    </div>
+    </div>
+    ) : 
+    (<></>)}
+    <Footer /></>
   );
 }
+
+// export default Account;

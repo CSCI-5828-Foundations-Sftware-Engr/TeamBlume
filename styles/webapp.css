@@ -1,0 +1,61 @@
+.global-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background-color: #101010; 
+    opacity: 0.9;
+}
+  
+.logo {
+    display: inline-block;
+    margin-left: 20px;
+    cursor: pointer;
+}
+  
+/* .logout {
+    display: inline-block;
+    margin-right: 20px;
+} */
+  
+.header-button {
+    margin: 14px 14px;
+    padding: 7px;
+    background-color: #fff;
+    color: #101010;
+    border: 1px solid #333;
+    border-radius: 4px;
+    cursor: pointer;
+}
+  
+.header-button:hover {
+    background-color: #101010;
+    color: #fff;
+}
+
+.content-container{
+    max-width: 70%;
+    margin: 7% 15%;
+}
+
+.nav-buttons{
+    float: right;
+    margin-right: 1.5rem;
+}
+.nav-buttons ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    float: right;
+  }
+
+  .nav-buttons li {
+    margin-left: 20px;
+  }
+
+.account-container{
+    margin: 7% 7% 5% 7%;
+}
