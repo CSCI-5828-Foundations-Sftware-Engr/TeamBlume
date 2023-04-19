@@ -63,7 +63,7 @@ const Home: NextPage = () => {
               <DropdownComponent ddType={'category-dropdown'} ddItems={menuItems}/>
             </div>
             <div className="col-6 cat-button">
-              <Button onPress={(e)=>{redirectToCompare(document.querySelector('#category-dropdown-value').value || menuItems[0])}}>Start comparing</Button>
+              <Button onPress={()=>{redirectToCompare((document.getElementById('category-dropdown-value') as HTMLInputElement).value)}}>Start comparing</Button>
             </div>
           </div>
         )}
