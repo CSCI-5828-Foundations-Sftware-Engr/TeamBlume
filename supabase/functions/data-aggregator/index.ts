@@ -11,8 +11,8 @@ serve(async (_req) => {
     try {
         //const env = config();
         const redis = new Redis({
-        url: 'https://usw1-special-silkworm-33116.upstash.io',
-        token: '5812618d9b59421fa9c4b2bc1d080618'
+        url: Deno.env.get('UPSTASH_URL')!,
+        token: Deno.env.get('UPSTASH_TOKEN')!,
       })
   
     
