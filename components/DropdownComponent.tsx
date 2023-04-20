@@ -21,9 +21,10 @@ export default function DropdownComponent({ddType,ddItems} : {ddType : string, d
 
   const cName = ddType + " drop-down-selection";
   const iId = ddType + "-value";
+  const dId = ddType + "-dropdown-selector";
 
   return(
-    <div className="dropdown-selector" id="dropdown-selector">
+    <div className="dropdown-selector" id={dId}>
       <Dropdown>
         <Dropdown.Button className={cName} value={selectedValue}>{selectedValue}</Dropdown.Button>
         <Dropdown.Menu aria-label="Dynamic Actions" variant="solid" selectionMode="single" 

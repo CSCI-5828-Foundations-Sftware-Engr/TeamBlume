@@ -29,7 +29,8 @@ const Home: NextPage = () => {
     { key: "groceries", name: "Groceries" },
   ];
 
-  function redirectToCompare(opVal:string){
+  function redirectToCompare(){
+  const opVal = (document.getElementById('category-dropdown-value') as HTMLInputElement).value;
     Router.push({
       pathname: '/pacom/compare',
       query: { keyword: opVal },
@@ -63,7 +64,7 @@ const Home: NextPage = () => {
               <DropdownComponent ddType={'category-dropdown'} ddItems={menuItems}/>
             </div>
             <div className="col-6 cat-button">
-              <Button onPress={()=>{redirectToCompare((document.getElementById('category-dropdown-value') as HTMLInputElement).value)}}>Start comparing</Button>
+              <Button onPress={redirectToCompare}>Start comparing</Button>
             </div>
           </div>
         )}
