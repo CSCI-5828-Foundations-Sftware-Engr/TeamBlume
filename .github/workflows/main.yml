@@ -16,6 +16,15 @@ jobs:
           node-version: 18.x
       - run: yarn
       - run: yarn lint
+      - name: Add .env
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          echo "NEXT_PUBLIC_SUPABASE_URL=$SUPABASE_URL" >> .env
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$SUPABASE_KEY" >> .env
+          cat .env
+      - run: yarn build
   
   deploy:
     runs-on: ubuntu-latest

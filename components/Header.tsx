@@ -4,7 +4,7 @@ import Link from 'next/link'
 import HeaderUserOptions from './HeaderUserOptions';
 
 interface Props {
-    session : Session;
+    session : Session | null;
 }
 
 const Header = ({session} : Props) => {
