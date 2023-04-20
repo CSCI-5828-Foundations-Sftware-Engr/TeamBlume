@@ -23,6 +23,41 @@ export interface Database {
           name?: string | null
         }
       }
+      products: {
+        Row: {
+          brand: string | null
+          category_id: number | null
+          id: number
+          image_link: string | null
+          inserted_at: string
+          platform: string | null
+          product_link: string | null
+          product_name: string | null
+          updated_at: string
+        }
+        Insert: {
+          brand?: string | null
+          category_id?: number | null
+          id?: number
+          image_link?: string | null
+          inserted_at?: string
+          platform?: string | null
+          product_link?: string | null
+          product_name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          brand?: string | null
+          category_id?: number | null
+          id?: number
+          image_link?: string | null
+          inserted_at?: string
+          platform?: string | null
+          product_link?: string | null
+          product_name?: string | null
+          updated_at?: string
+        }
+      }
       profiles: {
         Row: {
           avatar_url: string | null
