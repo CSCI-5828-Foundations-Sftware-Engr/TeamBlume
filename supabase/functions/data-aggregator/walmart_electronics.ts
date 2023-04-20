@@ -42,7 +42,7 @@ export const scrapeWalmart = async () => {
             const numReviews = $(element).find('div.flex.items-center.mt2 > span[aria-hidden="true"]').text();
 
             products.push({
-                platform: 'walmart',
+                platform: 'walmart_electronics',
                 title,
                 image,
                 link: `https://walmart.com${link}`,
