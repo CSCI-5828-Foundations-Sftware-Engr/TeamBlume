@@ -34,7 +34,9 @@ export const scrapeWalmartGrocery = async (search:any) => {
         $('.mb0.ph1.pa0-xl.bb.b--near-white.w-25').each((_ : any, element : any) => {
             if(products.length >= 1) return false;
             const image = $(element).find('img.absolute.top-0.left-0').attr('src')!;
-            const link = $(element).find('a.absolute.w-100.h-100.z-1.hide-sibling-opacity').attr('href');
+            const link = $(element)
+            .find('a.absolute.w-100.h-100.z-1.hide-sibling-opacity')
+            .attr('href')!;
             const title = $(element).find('a.absolute.w-100.h-100.z-1.hide-sibling-opacity > span').text();
             const price = $(element).find('div.mr1.mr2-xl.b.black.lh-copy.f5.f4-l[aria-hidden="true"]').text();
             const rating = $(element).find('div.flex.items-center.mt2 > span.w_iUH7').text().split(' ')[0];
@@ -49,18 +51,18 @@ export const scrapeWalmartGrocery = async (search:any) => {
                 rating: string,
                 numReviews: string
             } = {
-            platform: 'walmart-grocery',
+            platform: 'walmart_grocery',
             title: title,
             price: price,
             image: image,
-            link: `https://walmart.com${link}`,
+            link: link,
             rating: rating,
             numReviews: numReviews
             };
             products.push(scraped);
 
         });
-        // console.log(products);
+         console.log(products);
         return new Promise((resolve, _reject) => {
             resolve(products[0]);
         });

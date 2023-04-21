@@ -17,4 +17,5 @@ export const ELECTRONICS = {
   4:'Logitech MX Mechanical keyboard',
   5: 'Razer Black Widow V4 Pro keyboard',
   6: 'Hyperx Alloy Elite 2 keyboard'
-};
+  // deno-lint-ignore no-explicit-any
+} as any;
