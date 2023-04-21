@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test:all": "jest",
+    "test:ci": "jest --ci --coverage"
   },
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.12",

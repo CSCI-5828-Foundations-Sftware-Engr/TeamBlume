@@ -26,7 +26,8 @@ jobs:
           echo "NEXT_PUBLIC_SUPABASE_URL=$SUPABASE_URL" >> .env.test.local
           echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$SUPABASE_KEY" >> .env.test.local
           cat .env
-      - run: yarn test
+      - run: yarn test:all
+      - run: yarn test:ci
       - run: yarn build
   
   deploy:
