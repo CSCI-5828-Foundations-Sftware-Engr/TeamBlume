@@ -5,6 +5,8 @@ import {scrapeWalmartGrocery} from "./walmart_grocery.ts";
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { Redis } from 'https://deno.land/x/upstash_redis@v1.19.3/mod.ts'
 import { GROCERY, ELECTRONICS } from './product_list.ts';
+import "https://deno.land/std@0.184.0/dotenv/load.ts";
+
 
 // declare a function to get price from string
 const getPriceFromString = (str: string) => {
@@ -54,8 +56,8 @@ serve(async (_req) => {
     try {
         // //const env = config();
         const redis = new Redis({
-        url: 'https://usw1-special-silkworm-33116.upstash.io',
-        token: 'AYFcASQgYWZiNDhjZTgtYjQwMi00NWY0LWFiYWQtMWExYWY5Mjc1MmUyNTgxMjYxOGQ5YjU5NDIxZmE5YzRiMmJjMWQwODA2MTg='
+        url: Deno.env.get('UPSTASH_URL')!,
+        token: Deno.env.get('UPSTASH_TOKEN')!
        
       });
      

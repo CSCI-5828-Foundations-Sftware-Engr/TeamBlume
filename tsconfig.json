@@ -28,6 +28,7 @@
     "**/*.tsx"
 , "supabase/functions/data-aggregator/index.js"  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "supabase/functions"
   ]
 }
