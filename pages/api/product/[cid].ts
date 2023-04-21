@@ -11,10 +11,12 @@ const getProductsForCategory = async (
     res
   });
 
+  const { cid } = req.query;
+
   const { data: products, error } = await supabaseServerClient
     .from('products')
     .select()
-    .eq('category_id', req.query.category_id);
+    .eq('category_id', cid);
 
   if (error) {
     res.status(500).json({ error });
