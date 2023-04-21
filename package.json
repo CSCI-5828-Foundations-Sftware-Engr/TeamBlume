@@ -15,6 +15,7 @@
     "@supabase/auth-helpers-react": "^0.3.1",
     "@supabase/auth-ui-react": "^0.2.6",
     "@supabase/supabase-js": "^2.5.0",
+    "@vercel/analytics": "^1.0.0",
     "msw": "^1.2.1",
     "next": "12.3.1",
     "node-mocks-http": "^1.12.2",

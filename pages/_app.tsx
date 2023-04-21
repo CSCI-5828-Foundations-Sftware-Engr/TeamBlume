@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { AppProps } from 'next/app';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react';
+import { Analytics } from '@vercel/analytics/react';
 
 import { createTheme, NextUIProvider } from '@nextui-org/react';
 
@@ -16,7 +17,7 @@ function MyApp({
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
   const theme = createTheme({
-    type: "dark", // it could be "light" or "dark"
+    type: 'dark', // it could be "light" or "dark"
     theme: {
       colors: {
         // brand colors
@@ -29,20 +30,20 @@ function MyApp({
         primaryBorderHover: '$green600',
         primarySolidHover: '$green700',
         primarySolidContrast: '$white',
-        primaryShadow: '$green500',
-  
+        primaryShadow: '$green500'
+
         // gradient: 'linear-gradient(112deg, $blue100 -25%, $pink500 -10%, $purple500 80%)',
         // link: '#5E1DAD',
-  
+
         // // you can also create your own color
         // myColor: '#ff4ecd'
-  
+
         // ...  more colors
       },
       space: {},
       fonts: {}
     }
-  })
+  });
 
   return (
     <NextUIProvider theme={theme}>
@@ -51,8 +52,8 @@ function MyApp({
         initialSession={pageProps.initialSession}
       >
         <Component {...pageProps} />
+        <Analytics />
       </SessionContextProvider>
-      
     </NextUIProvider>
   );
 }
