@@ -1,5 +1,5 @@
 import React from 'react'
-import DropdownComponent from '../components/DropdownComponent'
+import {DropdownComponent} from '../components/DropdownComponent'
 
 describe('DropdownComponent Loads properly', () => {
 
