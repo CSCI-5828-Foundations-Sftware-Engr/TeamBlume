@@ -1,3 +1,5 @@
+import React from "react";
+
 import Head from 'next/head';
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
@@ -69,6 +71,7 @@ const Home = () => {
             <div className="col-6 cat-button">
               <Button onPress={redirectToCompare}>Start comparing</Button>
             </div>
+          </div>
           )}
         </div>
         <Footer />
