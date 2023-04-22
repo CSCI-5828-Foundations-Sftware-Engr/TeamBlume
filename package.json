@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "cypress": "cypress open",
+    "component": "cypress open --component",
+    "component:headless": "cypress run --component",
     "test": "jest --watch",
     "test:all": "jest",
     "test:ci": "jest --ci --coverage"
@@ -35,6 +38,7 @@
     "@types/node": "18.8.5",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
+    "cypress": "12.10.0",
     "eslint": "8.25.0",
     "eslint-config-next": "12.3.1",
     "jest": "^29.5.0",

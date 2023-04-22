@@ -24,11 +24,13 @@ export const DropdownComponent = ({
     setSelected(e as Set<string>);
   }
 
-  const cName = ddType + ' drop-down-selection';
-  const iId = ddType + '-value';
 
-  return (
-    <div className="dropdown-selector" id="dropdown-selector">
+  const cName = ddType + " drop-down-selection";
+  const iId = ddType + "-value";
+  const dId = ddType + "-dropdown-selector";
+
+  return(
+    <div className="dropdown-selector" id={dId}>
       <Dropdown>
         <Dropdown.Button className={cName} value={selectedValue}>
           {selectedValue}
