@@ -65,7 +65,7 @@ const Home = () => {
 
     Router.push({
       pathname: '/pacom/compare',
-      query: { keyword: opVal }
+      query: { catId: opVal }
     });
   }
 

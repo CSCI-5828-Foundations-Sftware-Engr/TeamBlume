@@ -34,7 +34,7 @@ export default () => {
 
   useEffect(() => {
     if(queryObj!=undefined){
-    fetch('/api/product/'+queryObj.keyword)
+    fetch('/api/product/'+queryObj.catId)
       .then(response => response.json())
       .then(json => 
         {
