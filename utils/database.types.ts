@@ -9,6 +9,55 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      categories: {
+        Row: {
+          id: number
+          name: string | null
+        }
+        Insert: {
+          id?: number
+          name?: string | null
+        }
+        Update: {
+          id?: number
+          name?: string | null
+        }
+      }
+      products: {
+        Row: {
+          brand: string | null
+          category_id: number | null
+          id: number
+          image_link: string | null
+          inserted_at: string
+          platform: string | null
+          product_link: string | null
+          product_name: string | null
+          updated_at: string
+        }
+        Insert: {
+          brand?: string | null
+          category_id?: number | null
+          id?: number
+          image_link?: string | null
+          inserted_at?: string
+          platform?: string | null
+          product_link?: string | null
+          product_name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          brand?: string | null
+          category_id?: number | null
+          id?: number
+          image_link?: string | null
+          inserted_at?: string
+          platform?: string | null
+          product_link?: string | null
+          product_name?: string | null
+          updated_at?: string
+        }
+      }
       profiles: {
         Row: {
           avatar_url: string | null

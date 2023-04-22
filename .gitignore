@@ -37,3 +37,4 @@ data/
 # local genrated
 *.lock
 package-lock.json
+
