@@ -2,26 +2,18 @@
 //import { Card, Text, Metric, Title, LineChart } from "@tremor/react";
 import BarChart from '../components/BarChart'
 const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: [],
   datasets: [
-    {
-      label: 'My First dataset',
-      backgroundColor: 'rgba(75,192,192,0.4)',
-      borderColor: 'rgba(75,192,192,1)',
-      data: [65, 59, 80, 81, 56, 55, 40]
-    },
-    {
-      label: 'My Second dataset',
-      backgroundColor: 'rgba(0,0,255,0.4)',
-      borderColor: 'rgba(0,0,255,1)',
-
-      data: [80, 60, 40, 31, 76, 85, 80]
-    }
+     {
+       label: 'Top Searched Products',
+       data: []
+     }
 
   ]
 };
 
-export default function Insights({ count, chartData }) {
+export default function Insights({data }) {
   return (
     <>
       <div>
@@ -44,20 +36,29 @@ export async function getServerSideProps(context) {
 
     // Return response as prop
   const response = await request.json()
-  console.log(response.results[0].result)
+  //console.log(response.results[0].result)
   const dataPoints = response.results[0].result[0].data
   const labels = response.results[0].result[0].labels
+//   for (let i = 0; i < data.length; i++) {
+//       data.datasets.push({
+//           product_name: data[i].product_name ?. toString(),
+//           brand: data[i].brand,
+//           img_link: data[i].image_link,
+//           product_link: data[i].product_link,
+//           platform: data[i].platform
+//       });
+//   }
+  const insights_data = response.results[0].result
+  for(let i=0; i<insights_data.length; i++){
+    data.labels.push(insights_data[i].label);
+    data.datasets[0].data.push(insights_data[i].count);
+
+  }
+  console.log(data)
   const count=response.results[0].result[0].count
-  const chartData = dataPoints.map((point, index) => {
-    return {
-      date: labels[index],
-      pageviews: point
-    }
-  })
   return {
     props: {
-      count,
-      chartData
+      data
     }
   }
 }
