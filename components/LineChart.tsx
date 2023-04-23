@@ -53,10 +53,11 @@ const data = {
   ]
 };
 
-const LineChart = ({ imageSrc, brand, name, productLink } : {imageSrc : string | undefined, brand : string | undefined, name : string | undefined, productLink : string}) => {
+//TODO: Take data as Input
+const LineChart = ({} : {}) => {
   return(
     <div>
-        <h2>Line Example</h2>
+        <h2>Trends</h2>
         <Line
           data={data}
           width={400}

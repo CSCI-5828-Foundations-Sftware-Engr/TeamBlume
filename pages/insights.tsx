@@ -2,7 +2,6 @@
 //import { Card, Text, Metric, Title, LineChart } from "@tremor/react";
 import BarChart from '../components/BarChart'
 const data = {
-  //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
   labels: [],
   datasets: [
      {
@@ -36,26 +35,12 @@ export async function getServerSideProps(context) {
 
     // Return response as prop
   const response = await request.json()
-  //console.log(response.results[0].result)
-  const dataPoints = response.results[0].result[0].data
-  const labels = response.results[0].result[0].labels
-//   for (let i = 0; i < data.length; i++) {
-//       data.datasets.push({
-//           product_name: data[i].product_name ?. toString(),
-//           brand: data[i].brand,
-//           img_link: data[i].image_link,
-//           product_link: data[i].product_link,
-//           platform: data[i].platform
-//       });
-//   }
+
   const insights_data = response.results[0].result
   for(let i=0; i<insights_data.length; i++){
     data.labels.push(insights_data[i].label);
     data.datasets[0].data.push(insights_data[i].count);
-
   }
-  console.log(data)
-  const count=response.results[0].result[0].count
   return {
     props: {
       data

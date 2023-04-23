@@ -69,7 +69,7 @@ export default() => {
 
     }, [queryObj]);
 
-
+// Need product_id and subcategory (Mouse/Keyboard)
     function populateData(data : dataObj[]) {
         if (data) {
             for (let i = 0; i < data.length; i++) {
