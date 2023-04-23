@@ -9,7 +9,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import HomeContent from '../components/HomeContent';
 import { DropdownComponent } from '../components/DropdownComponent';
-
+import {TilesComponent} from '../components/TilesComponent';
 import { Button } from '@nextui-org/react';
 import Router from 'next/router';
 
@@ -41,9 +41,9 @@ const Home = () => {
   useEffect(() => {
     fetch('/api/product/categories')
       .then(response => response.json())
-      .then(json => 
+      .then(json =>
         {
-            setData(json); 
+            setData(json);
             populateCategories(json.categories);
         })
       .catch(error => console.error(error));
@@ -57,9 +57,9 @@ const Home = () => {
         catItems.push({ key: data[i].id?.toString(), name: data[i].name });
       }
       setMenuItems(catItems);
-    } 
+    }
   }
-  
+
   function redirectToCompare(){
   const opVal = (document.getElementById('category-dropdown-value') as HTMLInputElement).value;
 
@@ -68,7 +68,7 @@ const Home = () => {
       query: { catId: opVal }
     });
   }
-
+  console.log(menuItems)
   return (
     <div>
       <Head>
@@ -97,10 +97,10 @@ const Home = () => {
             <HomeContent logged={true}/>
             <div className="col-6 category-dropdown">
               <DropdownComponent ddType={'category-dropdown'} ddItems={menuItems}/>
-            </div>
-            <div className="col-6 cat-button">
+              <TilesComponent ddType={'category-dropdown'} ddItems={menuItems}/>
               <Button onPress={redirectToCompare}>Start comparing</Button>
             </div>
+
           </div>
           )}
         </div>
