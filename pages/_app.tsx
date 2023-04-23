@@ -6,6 +6,7 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react';
 import posthog from "posthog-js"
 import { PostHogProvider } from 'posthog-js/react'
+import { Analytics } from '@vercel/analytics/react';
 
 import { createTheme, NextUIProvider } from '@nextui-org/react';
 
@@ -29,7 +30,7 @@ function MyApp({
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
   const theme = createTheme({
-    type: "dark", // it could be "light" or "dark"
+    type: 'dark', // it could be "light" or "dark"
     theme: {
       colors: {
         // brand colors
@@ -42,7 +43,7 @@ function MyApp({
         primaryBorderHover: '$green600',
         primarySolidHover: '$green700',
         primarySolidContrast: '$white',
-        primaryShadow: '$green500',
+        primaryShadow: '$green500'
 
         // gradient: 'linear-gradient(112deg, $blue100 -25%, $pink500 -10%, $purple500 80%)',
         // link: '#5E1DAD',
@@ -55,7 +56,7 @@ function MyApp({
       space: {},
       fonts: {}
     }
-  })
+  });
 
   return (
     <NextUIProvider theme={theme}>
@@ -65,6 +66,7 @@ function MyApp({
           initialSession={pageProps.initialSession}
         >
           <Component {...pageProps} />
+          <Analytics />
         </SessionContextProvider>
       </PostHogProvider>
     </NextUIProvider>
