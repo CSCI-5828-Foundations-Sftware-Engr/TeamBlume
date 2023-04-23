@@ -1,18 +1,20 @@
 // pages/insights.tsx
 //import { Card, Text, Metric, Title, LineChart } from "@tremor/react";
+import { GetServerSidePropsContext } from 'next';
 import BarChart from '../components/BarChart'
-const data = {
-  labels: [],
-  datasets: [
-     {
-       label: 'Top Searched Products',
-       data: []
-     }
 
-  ]
+type dataObj = {
+    labels?: any[];
+    datasets?: any[];
 };
 
-export default function Insights({data }) {
+type ChartProps = {
+  data: dataObj;
+};
+
+
+
+export default function Insights({data }:ChartProps) {
   return (
     <>
       <div>
@@ -22,7 +24,7 @@ export default function Insights({data }) {
   )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context:GetServerSidePropsContext) {
   const url = `${process.env.NEXT_PUBLIC_POSTHOG_HOST}/api/projects/${process.env.NEXT_PUBLIC_POSHOG_ID}/insights?short_id=QYJfD25z`;
 
   const request = await fetch(url, {
@@ -32,6 +34,17 @@ export async function getServerSideProps(context) {
       'Authorization': `Bearer ${process.env.NEXT_POSTHOG_PERSONAL_KEY}`
     }
   })
+
+  const data = {
+    labels: [] as string[],
+    datasets: [
+       {
+         label: 'Top Searched Products',
+         data: [] as number[]
+       }
+
+    ]
+  };
 
     // Return response as prop
   const response = await request.json()
