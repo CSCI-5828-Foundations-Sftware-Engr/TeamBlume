@@ -68,7 +68,7 @@ const Home = () => {
       query: { catId: opVal }
     });
   }
-  console.log(menuItems)
+  
   return (
     <div>
       <Head>
@@ -97,7 +97,9 @@ const Home = () => {
             <HomeContent logged={true}/>
             <div className="col-6 category-dropdown">
               <DropdownComponent ddType={'category-dropdown'} ddItems={menuItems}/>
-              <TilesComponent ddType={'category-dropdown'} ddItems={menuItems}/>
+              </div>
+            <div className="col-6 cat-button">
+              {/* <TilesComponent ddType={'category-dropdown'} ddItems={menuItems}/> */}
               <Button onPress={redirectToCompare}>Start comparing</Button>
             </div>
 
