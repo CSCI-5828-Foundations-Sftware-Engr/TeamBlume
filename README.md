@@ -20,6 +20,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
 NEXT_PUBLIC_POSTHOG_KEY=
 NEXT_PUBLIC_POSTHOG_HOST=https://app.posthog.com
+NEXT_PUBLIC_POSHOG_ID=
 ```
 
 - Finally, run the development server:
