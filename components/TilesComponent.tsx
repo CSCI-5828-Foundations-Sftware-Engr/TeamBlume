@@ -2,17 +2,18 @@ import React from 'react';
 import { Card, Grid, Row, Text } from '@nextui-org/react';
 import Router from 'next/router';
 
-export const CardComponent = ({
+type ddItemObj = {
+  key?: string;
+  name?: string;
+};
+
+export const TilesComponent = ({
   ddType,
   ddItems
 }: {
   ddType: string;
   ddItems: { key: string; name: string }[];
 }) => {
-  type ddItemObj = {
-    key?: string;
-    name?: string;
-  };
 
   const [selected, setSelected] = React.useState(new Set([ddItems[0].key]));
 
@@ -25,11 +26,11 @@ export const CardComponent = ({
     setSelected(e as Set<string>);
   }
 
-  function redirectToCompare(opVal: string) {
-    Router.push({
-      pathname: '/pacom/compare',
-      query: { keyword: opVal }
-    });
+  function redirectToCompare(opVal: string){
+      Router.push({
+        pathname: '/pacom/compare',
+        query: { catId: opVal }
+      });
   }
 
   const cName = ddType + ' card-selection';
