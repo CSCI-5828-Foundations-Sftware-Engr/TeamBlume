@@ -8,10 +8,12 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import HomeContent from '../components/HomeContent';
-import { DropdownComponent } from '../components/DropdownComponent';
-import {TilesComponent} from '../components/TilesComponent';
-import { Button } from '@nextui-org/react';
+import { CardComponent } from "../components/CardComponent";
+
+import { Grid } from '@nextui-org/react';
 import Router from 'next/router';
+import { Loading } from '@nextui-org/react';
+
 
 const Home = () => {
   const sessionVar = useSession();
@@ -31,81 +33,121 @@ const Home = () => {
   const [session, setSession] = useState(useSession());
   const supabase = useSupabaseClient();
 
-  const[menuItems, setMenuItems] = useState<ddItemObj[]>([{key: 'select an option', name: 'select an option'}]);
+  const [menuItems, setMenuItems] = useState<ddItemObj[]>([{
+    key: 'select an option',
+    name: 'select an option'
+  }]);
   const [data, setData] = useState(null);
+
+  const [categories, setCategories] = useState<dataObj[]>([]);
 
   if (session != sessionVar) {
     setSession(sessionVar);
   }
 
   useEffect(() => {
-    fetch('/api/product/categories')
-      .then(response => response.json())
-      .then(json =>
-        {
-            setData(json);
-            populateCategories(json.categories);
-        })
-      .catch(error => console.error(error));
+    fetch('/api/product/categories').then(response => response.json()).then(json => {
+      setData(json);
+      populateCategories(json.categories);
+      populateData(json.categories);
+    }).catch(error => console.error(error));
   }, []);
 
-  function populateCategories(data:dataObj[]) {
+  function populateCategories(data: dataObj[]) {
     if (data) {
-      let catItems : ddItemObj[] = [];
+      let catItems: ddItemObj[] = [];
       for (let i = 0; i < data.length; i++) {
         console.log(data[i].name);
-        catItems.push({ key: data[i].id?.toString(), name: data[i].name });
+        catItems.push({
+          key: data[i].id?.toString(),
+          name: data[i].name
+        });
       }
       setMenuItems(catItems);
     }
   }
 
-  function redirectToCompare(){
-  const opVal = (document.getElementById('category-dropdown-value') as HTMLInputElement).value;
+  let catItems: dataObj[] = [];
+
+  function populateData(data: dataObj[]) {
+    if (data) {
+      for (let i = 0; i < data.length; i++) {
+        catItems.push({ id: data[i].id, name: data[i].name });
+      }
+      setCategories(catItems);
+    }
+  }
+
+  function redirectToCompare() {
+    const opVal = (document.getElementById('category-dropdown-value') as HTMLInputElement).value;
 
     Router.push({
       pathname: '/pacom/compare',
-      query: { catId: opVal }
+      query: {
+        catId: opVal
+      }
     });
   }
-  
+
   return (
     <div>
       <Head>
         <title>PACom</title>
         <meta name="description" content="Price comparison and aggregator" />
       </Head>
-      {session ? <Header session={session} /> : <></>}
+      {
+        session ? <Header session={session} /> : <></>
+      }
       <div className="global-container" id="global-container">
-        <div
-          className={session ? 'content-container' : 'container'}
-          style={{ padding: '50px 0 100px 0' }}
-        >
-          {!session ? (
-            <div className="row">
-              <HomeContent logged={false} />
-              <div className="col-6 auth-widget">
-                <Auth
-                  supabaseClient={supabase}
-                  appearance={{ theme: ThemeSupa }}
-                  theme="dark"
-                />
+        <div className={
+          session ? 'content-container' : 'container'
+        }
+          style={
+            { padding: '50px 0 100px 0' }
+          }>
+          {
+            !session ? (
+              <div className="row">
+                <HomeContent logged={false} />
+                <div className="col-6 auth-widget">
+                  <Auth supabaseClient={supabase}
+                    appearance={
+                      { theme: ThemeSupa }
+                    }
+                    theme="dark" />
+                </div>
               </div>
-            </div>
-        ) : (
-          <div className="row">
-            <HomeContent logged={true}/>
-            <div className="col-6 category-dropdown">
-              <DropdownComponent ddType={'category-dropdown'} ddItems={menuItems}/>
-              </div>
-            <div className="col-6 cat-button">
-              {/* <TilesComponent ddType={'category-dropdown'} ddItems={menuItems}/> */}
-              <Button onPress={redirectToCompare}>Start comparing</Button>
-            </div>
+            ) : (
+              <div className="row">
+                <HomeContent logged={true} /> 
+                {/* <div className="col-6 category-dropdown">
+                      <DropdownComponent ddType={'category-dropdown'} ddItems={menuItems}/>
+                    </div>
+                    <div className="col-6 cat-button">
+                      <Button onPress={redirectToCompare}>Start comparing</Button>
+                    </div> */}
+                <div className="col-12 category-cards">
+                  <div className="card-selector" id="card-selector">
+                    <div className="category-grid">
+                      <Grid.Container gap={2}>
+                        {
+                          (categories.length > 0 ? <> {
+                            categories.map((item, index) => (
+                              <CardComponent index={index || 0} id={item.id || 0} name={item.name || ""} />
+                            ))
+                          } </> : <>
+                            <div className="flex flex-center">
+                              <Loading />
+                            </div>
+                          </>)
+                        } </Grid.Container>
+                    </div>
 
-          </div>
-          )}
-        </div>
+                  </div>
+                </div>
+              </div>
+            )
+          } </div>
         <Footer />
       </div>
     </div>

@@ -102,7 +102,6 @@ export default() => {
                 session ? <Header session={session}/> : <></>
             }
                 <div className="content">
-                    <div className=""></div>
                     <div className="">
                         <div className="product-grid">
                             {
