@@ -1,5 +1,5 @@
 import {useRouter} from 'next/router'
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import ProductCard from '../../components/ProductCard';
 import LineChart from '../../components/LineChart';
@@ -15,7 +15,7 @@ import {Loading} from '@nextui-org/react';
 
 import {useSession} from '@supabase/auth-helpers-react';
 
-export default() => {
+const Products = () => {
 
     const sessionVar = useSession();
 
@@ -51,7 +51,8 @@ export default() => {
         brand?: string;
     };
 
-    let catItems: datObj[] = [];
+    const catItems : dataObj[] = React.useMemo(() => [], [] );
+    // let catItems: datObj[] = [];
 
     useEffect(() => {
 
@@ -59,7 +60,21 @@ export default() => {
         if (queryObj != undefined) {
             fetch('/api/product/' + queryObj.catId).then(response => response.json()).then(json => {
                 setData(json);
-                populateData(json.products);
+                // populateData(json.products);
+
+                if (json.products) {
+                    for (let i = 0; i < json.products.length; i++) {
+                        console.log(json.products[i].product_name);
+                        catItems.push({
+                            product_name: json.products[i].product_name ?. toString(),
+                            brand: json.products[i].brand,
+                            img_link: json.products[i].image_link,
+                            product_link: json.products[i].product_link,
+                            platform: json.products[i].platform
+                        });
+                    }
+                    setProducts(catItems);
+                }
             }).catch(error => console.error(error));
         }
 
@@ -67,24 +82,24 @@ export default() => {
             router.push("/");
         }
 
-    }, [queryObj]);
+    }, [queryObj, router, session, catItems]);
 
 // Need product_id and subcategory (Mouse/Keyboard)
-    function populateData(data : dataObj[]) {
-        if (data) {
-            for (let i = 0; i < data.length; i++) {
-                console.log(data[i].product_name);
-                catItems.push({
-                    product_name: data[i].product_name ?. toString(),
-                    brand: data[i].brand,
-                    img_link: data[i].image_link,
-                    product_link: data[i].product_link,
-                    platform: data[i].platform
-                });
-            }
-            setProducts(catItems);
-        }
-    }
+    // function populateData(data : dataObj[]) {
+    //     if (data) {
+    //         for (let i = 0; i < data.length; i++) {
+    //             console.log(data[i].product_name);
+    //             catItems.push({
+    //                 product_name: data[i].product_name ?. toString(),
+    //                 brand: data[i].brand,
+    //                 img_link: data[i].image_link,
+    //                 product_link: data[i].product_link,
+    //                 platform: data[i].platform
+    //             });
+    //         }
+    //         setProducts(catItems);
+    //     }
+    // }
 
 
 
@@ -141,3 +156,5 @@ export default() => {
     );
 
 }
+
+export default Products;

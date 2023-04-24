@@ -33,10 +33,10 @@ const Home = () => {
   const [session, setSession] = useState(useSession());
   const supabase = useSupabaseClient();
 
-  const [menuItems, setMenuItems] = useState<ddItemObj[]>([{
-    key: 'select an option',
-    name: 'select an option'
-  }]);
+  // const [menuItems, setMenuItems] = useState<ddItemObj[]>([{
+  //   key: 'select an option',
+  //   name: 'select an option'
+  // }]);
   const [data, setData] = useState(null);
 
   const [categories, setCategories] = useState<dataObj[]>([]);
@@ -45,29 +45,35 @@ const Home = () => {
     setSession(sessionVar);
   }
 
+  const catItems : dataObj[] = React.useMemo(() => [], [] );
+  // let catItems: dataObj[] = [];
+
   useEffect(() => {
     fetch('/api/product/categories').then(response => response.json()).then(json => {
       setData(json);
-      populateCategories(json.categories);
-      populateData(json.categories);
-    }).catch(error => console.error(error));
-  }, []);
-
-  function populateCategories(data: dataObj[]) {
-    if (data) {
-      let catItems: ddItemObj[] = [];
-      for (let i = 0; i < data.length; i++) {
-        console.log(data[i].name);
-        catItems.push({
-          key: data[i].id?.toString(),
-          name: data[i].name
-        });
+      // populateData(json.categories);
+      if (json.categories) {
+        for (let i = 0; i < json.categories.length; i++) {
+          catItems.push({ id: json.categories[i].id, name: json.categories[i].name });
+        }
+        setCategories(catItems);
       }
-      setMenuItems(catItems);
-    }
-  }
+    }).catch(error => console.error(error));
+  }, [catItems]);
 
-  let catItems: dataObj[] = [];
+  // function populateCategories(data: dataObj[]) {
+  //   if (data) {
+  //     let catItems: ddItemObj[] = [];
+  //     for (let i = 0; i < data.length; i++) {
+  //       console.log(data[i].name);
+  //       catItems.push({
+  //         key: data[i].id?.toString(),
+  //         name: data[i].name
+  //       });
+  //     }
+  //     setMenuItems(catItems);
+  //   }
+  // }
 
   function populateData(data: dataObj[]) {
     if (data) {
@@ -78,16 +84,16 @@ const Home = () => {
     }
   }
 
-  function redirectToCompare() {
-    const opVal = (document.getElementById('category-dropdown-value') as HTMLInputElement).value;
+  // function redirectToCompare() {
+  //   const opVal = (document.getElementById('category-dropdown-value') as HTMLInputElement).value;
 
-    Router.push({
-      pathname: '/pacom/compare',
-      query: {
-        catId: opVal
-      }
-    });
-  }
+  //   Router.push({
+  //     pathname: '/pacom/compare',
+  //     query: {
+  //       catId: opVal
+  //     }
+  //   });
+  // }
 
   return (
     <div>
@@ -133,7 +139,7 @@ const Home = () => {
                         {
                           (categories.length > 0 ? <> {
                             categories.map((item, index) => (
-                              <CardComponent index={index || 0} id={item.id || 0} name={item.name || ""} />
+                              <CardComponent key={index} index={index || 0} id={item.id || 0} name={item.name || ""} />
                             ))
                           } </> : <>
                             <div className="flex flex-center">
