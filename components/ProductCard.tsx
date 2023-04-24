@@ -13,7 +13,8 @@ const ProductCard = ({imageSrc, brand, name, productId, categoryId } : {imageSrc
       'Product Visited',
       {
         name: name,
-        brand: brand
+        brand: brand,
+        category: categoryId
       })
     }
 
