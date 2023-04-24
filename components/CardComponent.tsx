@@ -3,7 +3,7 @@ import Router from 'next/router';
 
 import { Card, Grid, Text } from '@nextui-org/react';
 
-export const CardComponent = ({index, id, name} : {index:number, id: number, name: string}) => {   
+export const CardComponent = ({index, id, name} : {index:number, id: number, name: string}) => {
 
     return(
         <div key={index} className="flex flex-row">
@@ -21,7 +21,7 @@ export const CardComponent = ({index, id, name} : {index:number, id: number, nam
                     }
                 }>
                 <Card.Image
-                    src = {"/images/"+name+".png"}
+                    src = {"/images/"+name.toLowerCase()+".png"}
                     objectFit="cover"
                     width="fit-content"
                     height={200}
