@@ -51,7 +51,7 @@ const Products = () => {
         brand?: string;
     };
 
-    const catItems : dataObj[] = React.useMemo(() => [], [] );
+    const catItems : datObj[] = React.useMemo(() => [], [] );
     // let catItems: datObj[] = [];
 
     useEffect(() => {
