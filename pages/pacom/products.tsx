@@ -2,6 +2,9 @@ import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react';
 
 import ProductCard from '../../components/ProductCard';
+import LineChart from '../../components/LineChart';
+
+import { Button, Text } from '@nextui-org/react';
 import Head from 'next/head';
 
 import Header from '../../components/Header';
@@ -66,7 +69,7 @@ export default() => {
 
     }, [queryObj]);
 
-
+// Need product_id and subcategory (Mouse/Keyboard)
     function populateData(data : dataObj[]) {
         if (data) {
             for (let i = 0; i < data.length; i++) {
@@ -82,6 +85,7 @@ export default() => {
             setProducts(catItems);
         }
     }
+
 
 
     return (
@@ -127,6 +131,9 @@ export default() => {
                         } </div>
                     </div>
                     <div className="flex-end flex"></div>
+                    <div>
+                      <LineChart />
+                    </div>
                 </div>
             </div>
             <Footer/>
