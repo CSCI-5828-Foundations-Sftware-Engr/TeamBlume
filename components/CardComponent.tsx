@@ -13,7 +13,7 @@ export const CardComponent = ({index, id, name} : {index:number, id: number, nam
                 onPress={
                     () => {
                     Router.push({
-                        pathname: '/pacom/compare',
+                        pathname: '/pacom/products',
                         query: {
                         catId: id
                         }
