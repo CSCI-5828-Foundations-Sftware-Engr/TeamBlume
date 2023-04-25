@@ -1,5 +1,5 @@
 import { createMocks, RequestMethod } from 'node-mocks-http';
-import getProductsForCategory from '../../../pages/api/product/categories/[cid]';
+import getProductsForCategory from '../../../pages/api/product/[cid]';
 
 function mockRequestResponse(method: RequestMethod) {
   const { req, res } = createMocks({ method });
