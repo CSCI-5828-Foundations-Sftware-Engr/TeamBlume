@@ -25,7 +25,7 @@ export const CardComponent = ({index, id, name} : {index:number, id: number, nam
                     objectFit="cover"
                     width="fit-content"
                     height={200}
-                    alt="Electronics"
+                    alt={name}
                     />
                 <Card.Footer>
                     <Text h2>{name}</Text>
