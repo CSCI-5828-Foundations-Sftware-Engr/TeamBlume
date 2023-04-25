@@ -3,18 +3,15 @@ import * as cheerio from 'https://esm.sh/cheerio@1.0.0-rc.12';
 
 // deno-lint-ignore no-explicit-any
 export const scrapeKingSoopers = async (search: any) => {
+
   try {
-    console.log('searching kingsoopers for ' + search)
     
     const result = await axiod.get(
-    
       'https://www.kingsoopers.com/search?query=' + search,
-     
       {
         headers: {
           'Accept-enconding': 'application/gzip',
-          'User-Agent': 'axiod 1.3.4'
-        }
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15'}
       }
     );
 
@@ -35,7 +32,6 @@ export const scrapeKingSoopers = async (search: any) => {
 
     // deno-lint-ignore no-explicit-any
     $(' .AutoGrid-cell.min-w-0 ').each((_: any, element: any) => {
-      console.log("here");
     if (products.length >= 1) return false;
       const image = $(element).find('img.kds-Image-img').attr('src')!;
      // console.log("here");
@@ -66,7 +62,7 @@ export const scrapeKingSoopers = async (search: any) => {
         numReviews: numReviews
       };
       products.push(scraped);
-      console.log(scraped);
+    //  console.log(scraped);
     });
     
     return new Promise((resolve, _reject) => {

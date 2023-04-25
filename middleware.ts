@@ -13,7 +13,7 @@ export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
   if (
-    pathName.startsWith('/api') // exclude Next.js internals
+    pathName.startsWith('/api') && pathName !== '/api/price/update'
   ) {
     const supabase = createMiddlewareSupabaseClient({ req, res });
     // Check if we have a session

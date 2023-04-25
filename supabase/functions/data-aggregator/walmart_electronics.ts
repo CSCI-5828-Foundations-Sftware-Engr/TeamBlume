@@ -10,7 +10,7 @@ export const scrapeWalmart = async (search: any) => {
       {
         headers: {
           'Accept-enconding': 'application/gzip',
-          'User-Agent': 'axiod 1.3.4'
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15'
         }
       }
     );
@@ -41,7 +41,7 @@ export const scrapeWalmart = async (search: any) => {
         .find('a.absolute.w-100.h-100.z-1.hide-sibling-opacity > span')
         .text();
       const price = $(element)
-        .find('div.flex.flex-wrap.justify-start.items-center.lh-title.mb1 > div.mr1.mr2-xl.b.black.green.lh-copy.f5.f4-l')
+        .find('div.flex.flex-wrap.justify-start.items-center.lh-title.mb1 > span.w_iUH7')
         .text();
       const rating = $(element)
         .find('div.flex.items-center.mt2 > span.w_iUH7')

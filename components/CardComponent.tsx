@@ -3,8 +3,15 @@ import Router from 'next/router';
 
 import { Card, Grid, Text } from '@nextui-org/react';
 
-export const CardComponent = ({index, id, name} : {index:number, id: number, name: string}) => {
-
+export const CardComponent = ({
+  index,
+  id,
+  name
+}: {
+  index: number;
+  id: number;
+  name: string;
+}) => {
     return(
         <div key={index} className="flex flex-row">
 

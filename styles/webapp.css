@@ -12,6 +12,7 @@
     display: inline-block;
     margin-left: 20px;
     cursor: pointer;
+    color: #fff;
 }
   
 .header-button {
@@ -95,6 +96,7 @@
   .product-details {
     padding: 1rem;
     text-align: center;
+    color: #fff;
   }
   
   .product-details h2 {

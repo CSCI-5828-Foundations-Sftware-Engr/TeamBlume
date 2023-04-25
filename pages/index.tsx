@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import Head from 'next/head';
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react';
@@ -8,12 +8,11 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import HomeContent from '../components/HomeContent';
-import { CardComponent } from "../components/CardComponent";
+import { CardComponent } from '../components/CardComponent';
 
 import { Grid } from '@nextui-org/react';
 import Router from 'next/router';
 import { Loading } from '@nextui-org/react';
-
 
 const Home = () => {
   const sessionVar = useSession();
@@ -44,10 +43,11 @@ const Home = () => {
       if (json.categories) {
         for (let i = 0; i < json.categories.length; i++) {
           catItems.push({ id: json.categories[i].id, name: json.categories[i].name });
+          }
+          setCategories(catItems);
         }
-        setCategories(catItems);
-      }
-    }).catch(error => console.error(error));
+      })
+      .catch(error => console.error(error));
   }, [catItems]);
 
   return (
@@ -56,31 +56,27 @@ const Home = () => {
         <title>PACom</title>
         <meta name="description" content="Price comparison and aggregator" />
       </Head>
-      {
-        session ? <Header session={session} /> : <></>
-      }
+      {session ? <Header session={session} /> : <></>}
       <div className="global-container" id="global-container">
-        <div className={
-          session ? 'content-container' : 'container'
-        }
-          style={
-            { padding: '50px 0 100px 0' }
-          }>
-          {
-            !session ? (
-              <div className="row">
-                <HomeContent logged={false} />
-                <div className="col-6 auth-widget">
-                  <Auth supabaseClient={supabase}
-                    appearance={
-                      { theme: ThemeSupa }
-                    }
-                    theme="dark" />
-                </div>
+        <div
+          className={session ? 'content-container' : 'container'}
+          style={{ padding: '50px 0 100px 0' }}
+        >
+          {!session ? (
+            <div className="row">
+              <HomeContent logged={false} />
+              <div className="col-6 auth-widget">
+                <Auth
+                  supabaseClient={supabase}
+                  appearance={{ theme: ThemeSupa }}
+                  theme="dark"
+                />
               </div>
+            </div>
+<<<<<<< HEAD
             ) : (
               <div className="row">
-                <HomeContent logged={true} /> 
+                <HomeContent logged={true} />
                 <div className="col-12 category-cards">
                   <div className="card-selector" id="card-selector">
                     <div className="category-grid">
@@ -89,7 +85,12 @@ const Home = () => {
                           (categories.length > 0 ? <> {
                             categories.map((item, index) => (
                               <>
-                              <CardComponent key={index} index={index || 0} id={item.id || 0} name={item.name || ""} />
+                              <CardComponent
+                                key={index}
+                                index={index || 0}
+                                id={item.id || 0}
+                                name={item.name || ""}
+                              />
                               </>
                             ))
                           } </> : <>
@@ -98,13 +99,12 @@ const Home = () => {
                             </div>
                           </>)
                         } </Grid.Container>
-                    </div>
-
                   </div>
                 </div>
               </div>
-            )
-          } </div>
+            </div>
+          )}{' '}
+        </div>
         <Footer />
       </div>
     </div>
