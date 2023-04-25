@@ -12,15 +12,79 @@ export interface Database {
       categories: {
         Row: {
           id: number
+          inserted_at: string
           name: string | null
+          updated_at: string
         }
         Insert: {
           id?: number
+          inserted_at?: string
           name?: string | null
+          updated_at?: string
         }
         Update: {
           id?: number
+          inserted_at?: string
           name?: string | null
+          updated_at?: string
+        }
+      }
+      prices: {
+        Row: {
+          id: number
+          inserted_at: string
+          num_reviews: number | null
+          platform: string | null
+          price: number | null
+          product_id: number | null
+          product_link: string | null
+          rating: number | null
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          inserted_at?: string
+          num_reviews?: number | null
+          platform?: string | null
+          price?: number | null
+          product_id?: number | null
+          product_link?: string | null
+          rating?: number | null
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          inserted_at?: string
+          num_reviews?: number | null
+          platform?: string | null
+          price?: number | null
+          product_id?: number | null
+          product_link?: string | null
+          rating?: number | null
+          updated_at?: string
+        }
+      }
+      prices_histories: {
+        Row: {
+          id: number
+          inserted_at: string
+          price: number | null
+          product_id: number | null
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          inserted_at?: string
+          price?: number | null
+          product_id?: number | null
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          inserted_at?: string
+          price?: number | null
+          product_id?: number | null
+          updated_at?: string
         }
       }
       products: {
@@ -30,8 +94,6 @@ export interface Database {
           id: number
           image_link: string | null
           inserted_at: string
-          platform: string | null
-          product_link: string | null
           product_name: string | null
           updated_at: string
         }
@@ -41,8 +103,6 @@ export interface Database {
           id?: number
           image_link?: string | null
           inserted_at?: string
-          platform?: string | null
-          product_link?: string | null
           product_name?: string | null
           updated_at?: string
         }
@@ -52,8 +112,6 @@ export interface Database {
           id?: number
           image_link?: string | null
           inserted_at?: string
-          platform?: string | null
-          product_link?: string | null
           product_name?: string | null
           updated_at?: string
         }
