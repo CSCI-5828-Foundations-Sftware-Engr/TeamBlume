@@ -7,7 +7,7 @@ const ProductCard = ({ imageSrc, brand, name, productLink } : {imageSrc : string
     const posthog = usePostHog()
 
     function productVist() {
-      posthog.capture(
+      posthog?.capture(
       'Product Visited',
       {
         name: name,

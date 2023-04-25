@@ -59,7 +59,7 @@ const LineChart = ({} : {}) => {
     <div>
         <h2>Trends</h2>
         <Line
-          data={data}
+          data={data as any}
           width={400}
           height={400}
         />
