@@ -1,3 +1,5 @@
+import React from "react";
+
 import Head from 'next/head';
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react';
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
@@ -27,7 +29,10 @@ const Home = () => {
     { key: 'groceries', name: 'Groceries' }
   ];
 
-  function redirectToCompare(opVal: string) {
+
+  function redirectToCompare(){
+  const opVal = (document.getElementById('category-dropdown-value') as HTMLInputElement).value;
+
     Router.push({
       pathname: '/pacom/compare',
       query: { keyword: opVal }
@@ -57,31 +62,16 @@ const Home = () => {
                 />
               </div>
             </div>
-          ) : (
-            <div className="row">
-              <HomeContent logged={true} />
-              <div className="col-6 category-dropdown">
-                <DropdownComponent
-                  ddType={'category-dropdown'}
-                  ddItems={menuItems}
-                />
-              </div>
-              <div className="col-6 cat-button">
-                <Button
-                  onPress={() => {
-                    redirectToCompare(
-                      (
-                        document.getElementById(
-                          'category-dropdown-value'
-                        ) as HTMLInputElement
-                      ).value
-                    );
-                  }}
-                >
-                  Start comparing
-                </Button>
-              </div>
+        ) : (
+          <div className="row">
+            <HomeContent logged={true}/>
+            <div className="col-6 category-dropdown">
+              <DropdownComponent ddType={'category-dropdown'} ddItems={menuItems}/>
             </div>
+            <div className="col-6 cat-button">
+              <Button onPress={redirectToCompare}>Start comparing</Button>
+            </div>
+          </div>
           )}
         </div>
         <Footer />
