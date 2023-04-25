@@ -73,7 +73,6 @@ const Home = () => {
                 />
               </div>
             </div>
-<<<<<<< HEAD
             ) : (
               <div className="row">
                 <HomeContent logged={true} />
