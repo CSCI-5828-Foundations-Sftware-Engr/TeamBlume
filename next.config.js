@@ -1,6 +1,6 @@
 module.exports = {
   images: {
-    domains: ['pisces.bbystatic.com']
+    domains: ['pisces.bbystatic.com', 'i5.walmartimages.com']
   },
   async redirects() {
     return [
