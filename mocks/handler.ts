@@ -19,6 +19,25 @@ const productsReturn = [
   }
 ];
 
+const pricesReturn = [
+  {
+    id: 1,
+    product_id: 1,
+    product_link: '',
+    rating: 1.0,
+    num_reviews: 5,
+    platform: 'walmart'
+  },
+  {
+    id: 2,
+    product_id: 1,
+    product_link: '',
+    rating: 3.0,
+    num_reviews: 5,
+    platform: 'bestbuy'
+  }
+]
+
 export const handlers = [
   rest.all(`${SUPABASE_URL}/rest/v1/categories`, async (req, res, ctx) => {
     switch (req.method) {
@@ -32,6 +51,14 @@ export const handlers = [
     switch (req.method) {
       case 'GET':
         return res(ctx.json(productsReturn));
+      default:
+        return res(ctx.json('Unhandled method'));
+    }
+  }),
+  rest.all(`${SUPABASE_URL}/rest/v1/prices`, async (req, res, ctx) => {
+    switch (req.method) {
+      case 'GET':
+        return res(ctx.json(pricesReturn));
       default:
         return res(ctx.json('Unhandled method'));
     }
