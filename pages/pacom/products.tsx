@@ -118,6 +118,7 @@ const Products = () => {
             }
                 <div className="content">
                     <div className="">
+                        <h3>{queryObj.catId == "1" ? "Electronics" : "Grocery"}</h3>
                         <div className="product-grid">
                             {
                             (products.length > 0 ? <> {
