@@ -154,7 +154,23 @@ const comparePrice = async (channel: any, redis: Redis,channel_name:string) => {
     }
 
     console.log("Changed"+JSON.stringify(changed));
-    
+    // call the api to send the changed data
+    if(changed.length>0){
+      //call the api to send the changed data
+      const response = await fetch('https://price-tracker-1.herokuapp.com/api/priceChange', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+
+          Authorization: 'Bearer ' + rest_token
+        },
+        body: JSON.stringify(changed)
+      });
+      const data = await response.json();
+      console.log(data);
+
+    }
+
     }else {
       console.log("Adding newly-----------------"+channel_name);
       await redis.set(channel_name, JSON.stringify(channel));
