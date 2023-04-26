@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS='-r @newrelic/next' next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_OPTIONS='-r @newrelic/next' next start",
     "lint": "next lint",
     "cypress": "cypress open",
     "component": "cypress open --component",
@@ -15,6 +15,7 @@
     "test:ci": "jest --ci --coverage"
   },
   "dependencies": {
+    "@newrelic/next": "^0.5.0",
     "@nextui-org/react": "^1.0.0-beta.12",
     "@supabase/auth-helpers-nextjs": "^0.5.6",
     "@supabase/auth-helpers-react": "^0.3.1",
@@ -24,17 +25,20 @@
     "@vercel/analytics": "^1.0.0",
     "bullmq": "^3.10.3",
     "msw": "^1.2.1",
+    "newrelic": "^10.0.0",
     "next": "12.3.1",
     "node-mocks-http": "^1.12.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "redis": "^4.6.5",
     "ts-node": "^10.9.1",
-    "whatwg-fetch": "^3.6.2"
+    "whatwg-fetch": "^3.6.2",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
+    "@types/newrelic": "^9.13.0",
     "@types/node": "18.8.5",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
