@@ -22,8 +22,6 @@ const Product = () => {
     const router = useRouter()
     const queryObj = router.query;
 
-    // const [data, setData] = useState<any>(null);
-    // const [priceData, setPriceData] = useState<any>(null);
     const [product, setProduct] = useState < datObj > ({});
     const [productPrices, setProductPrices] = useState < priceObj[] > ([]);
 
@@ -54,7 +52,6 @@ const Product = () => {
 
         if (queryObj != undefined && priceItmes.length == 0) {
             fetch(`/api/catProduct/${queryObj.catId}+${queryObj.prId}` ).then(response => response.json()).then(json => {
-                // setData(json);
 
                 if (json.products) {
                     for (let i = 0; i < json.products.length; i++) {
@@ -68,7 +65,6 @@ const Product = () => {
             }).catch(error => console.error(error));
 
             fetch('/api/price/' + queryObj.prId).then(response => response.json()).then(json => {
-                // setPriceData(json);
 
                 if (json.prices) {
                     for (let i = 0; i < json.prices.length; i++) {
@@ -100,17 +96,8 @@ const Product = () => {
                 <title>PACom</title>
                 <meta name="description" content="Price comparison and aggregator"/>
             </Head>
-            {
-                session ? <Header session={session}/> : <></>
-            }
-            <div className={'content-container'}
-                // style={
-                //     {   width: '80% auto',
-                //         display: 'block',
-                //         // padding: '50px 0 100px 0'
-                //     }
-                // }
-            >
+            {session ? <Header session={session}/> : <Header session={null}/>}
+            <div className={'content-container'}>
                 <div className="content">
                     <div className="">
                         <div className="product-detail-grid">

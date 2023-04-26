@@ -21,8 +21,6 @@ const Home = () => {
   type dataObj = {
     id?: number;
     name?: string;
-    inserted_at?: string;
-    updated_at?: string;
   };
 
   type ddItemObj = {
@@ -33,25 +31,16 @@ const Home = () => {
   const [session, setSession] = useState(useSession());
   const supabase = useSupabaseClient();
 
-  // const [menuItems, setMenuItems] = useState<ddItemObj[]>([{
-  //   key: 'select an option',
-  //   name: 'select an option'
-  // }]);
-  const [data, setData] = useState(null);
-
   const [categories, setCategories] = useState<dataObj[]>([]);
 
   if (session != sessionVar) {
     setSession(sessionVar);
   }
 
-  const catItems : dataObj[] = React.useMemo(() => [], [] );
-  // let catItems: dataObj[] = [];
+  const catItems : dataObj[] = React.useMemo(() => [], [] )
 
   useEffect(() => {
     fetch('/api/product/categories').then(response => response.json()).then(json => {
-      setData(json);
-      // populateData(json.categories);
       if (json.categories) {
         for (let i = 0; i < json.categories.length; i++) {
           catItems.push({ id: json.categories[i].id, name: json.categories[i].name });
@@ -60,40 +49,6 @@ const Home = () => {
       }
     }).catch(error => console.error(error));
   }, [catItems]);
-
-  // function populateCategories(data: dataObj[]) {
-  //   if (data) {
-  //     let catItems: ddItemObj[] = [];
-  //     for (let i = 0; i < data.length; i++) {
-  //       console.log(data[i].name);
-  //       catItems.push({
-  //         key: data[i].id?.toString(),
-  //         name: data[i].name
-  //       });
-  //     }
-  //     setMenuItems(catItems);
-  //   }
-  // }
-
-  function populateData(data: dataObj[]) {
-    if (data) {
-      for (let i = 0; i < data.length; i++) {
-        catItems.push({ id: data[i].id, name: data[i].name });
-      }
-      setCategories(catItems);
-    }
-  }
-
-  // function redirectToCompare() {
-  //   const opVal = (document.getElementById('category-dropdown-value') as HTMLInputElement).value;
-
-  //   Router.push({
-  //     pathname: '/pacom/compare',
-  //     query: {
-  //       catId: opVal
-  //     }
-  //   });
-  // }
 
   return (
     <div>
@@ -126,12 +81,6 @@ const Home = () => {
             ) : (
               <div className="row">
                 <HomeContent logged={true} /> 
-                {/* <div className="col-6 category-dropdown">
-                      <DropdownComponent ddType={'category-dropdown'} ddItems={menuItems}/>
-                    </div>
-                    <div className="col-6 cat-button">
-                      <Button onPress={redirectToCompare}>Start comparing</Button>
-                    </div> */}
                 <div className="col-12 category-cards">
                   <div className="card-selector" id="card-selector">
                     <div className="category-grid">
