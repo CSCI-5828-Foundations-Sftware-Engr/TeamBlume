@@ -1,6 +1,6 @@
 import { Button, Text } from '@nextui-org/react';
 import { usePostHog } from 'posthog-js/react';
-import {useRouter} from 'next/router'
+import {useRouter} from 'next/router';
 
 
 const ProductCard = ({imageSrc, brand, name, productId, categoryId } : {imageSrc : string | undefined, brand : string | undefined, name : string | undefined, productId : string | undefined, categoryId : string | undefined}) => {
