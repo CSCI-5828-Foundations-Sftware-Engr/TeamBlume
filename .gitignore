@@ -37,4 +37,6 @@ data/
 # local genrated
 *.lock
 package-lock.json
+newrelic_agent.log
+
 yarn.lock
