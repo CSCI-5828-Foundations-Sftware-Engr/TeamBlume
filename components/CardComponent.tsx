@@ -28,7 +28,7 @@ export const CardComponent = ({index, id, name} : {index:number, id: number, nam
                     alt={name}
                     />
                 <Card.Footer>
-                    <Text h2>{name}</Text>
+                    <Text h2 className="primary-cat-name">{name}</Text>
                 </Card.Footer>
                 </Card>
             </Grid>

@@ -160,12 +160,15 @@
     text-transform: capitalize;
   }
 
-  .product-detail-img{
+  .product-detail-img img{
     margin: auto;
     display: block;
-    /* width: fit-content; */
-    width: 200px;
+    width: 300px;
     height: auto;
+  }
+
+  .primary-cat-name{
+    margin: auto;
   }
 
   @media only screen and (min-width: 768px) {

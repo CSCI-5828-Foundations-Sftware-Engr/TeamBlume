@@ -66,7 +66,7 @@ const Products = () => {
             router.push("/");
         }
 
-    }, [queryObj, router, session, catItems]);
+    }, [queryObj, router, session, catItems, products]);
 
     return (
         <>
