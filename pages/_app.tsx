@@ -4,9 +4,23 @@ import { useState } from 'react';
 import type { AppProps } from 'next/app';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react';
+import posthog from "posthog-js"
+import { PostHogProvider } from 'posthog-js/react'
 import { Analytics } from '@vercel/analytics/react';
 
 import { createTheme, NextUIProvider } from '@nextui-org/react';
+
+// Check that PostHog is client-side
+if (typeof window !== 'undefined') {
+  posthog.init(process?.env.NEXT_PUBLIC_POSTHOG_KEY || '', {
+    api_host: process?.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com',
+    autocapture: false,
+    // Enable debug mode in development
+    loaded: (posthog) => {
+       if (process?.env.NODE_ENV === 'development') posthog.debug()
+    }
+  })
+}
 
 function MyApp({
   Component,
@@ -47,13 +61,15 @@ function MyApp({
 
   return (
     <NextUIProvider theme={theme}>
-      <SessionContextProvider
-        supabaseClient={supabaseClient}
-        initialSession={pageProps.initialSession}
-      >
-        <Component {...pageProps} />
-        <Analytics />
-      </SessionContextProvider>
+      <PostHogProvider client={posthog}>
+        <SessionContextProvider
+          supabaseClient={supabaseClient}
+          initialSession={pageProps.initialSession}
+        >
+          <Component {...pageProps} />
+          <Analytics />
+        </SessionContextProvider>
+      </PostHogProvider>
     </NextUIProvider>
   );
 }
