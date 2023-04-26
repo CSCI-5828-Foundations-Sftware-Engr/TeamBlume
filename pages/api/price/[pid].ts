@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import type { Database } from '../../../utils/database.types';
+import { logger } from '../../../components/Logger';
 
 const getPricesForProductID = async (
   req: NextApiRequest,
@@ -19,10 +20,12 @@ const getPricesForProductID = async (
     .eq('product_id', pid);
 
   if (error) {
+    logger.error(error);
     res.status(500).json({ error });
     return;
   }
 
+  logger.info(`Success ${prices}`);
   res.status(200).json({ prices });
 };
 

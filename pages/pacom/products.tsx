@@ -23,7 +23,6 @@ const Products = () => {
     const router = useRouter()
     const queryObj = router.query;
 
-    const [data, setData] = useState(null);
     const [products, setProducts] = useState < datObj[] > ([]);
 
     if (session != sessionVar) {
@@ -45,7 +44,6 @@ const Products = () => {
 
         if (products.length == 0 && queryObj != undefined) {
             fetch('/api/product/' + queryObj.catId).then(response => response.json()).then(json => {
-                setData(json);
 
                 if (json.products) {
                     for (let i = 0; i < json.products.length; i++) {

@@ -1,5 +1,6 @@
 import getCategories from '../../../pages/api/product/categories';
 import { createMocks, RequestMethod } from 'node-mocks-http';
+import { expect } from '@jest/globals';
 
 function mockRequestResponse(method: RequestMethod) {
   const { req, res } = createMocks({ method });
