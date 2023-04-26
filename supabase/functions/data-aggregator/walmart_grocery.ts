@@ -60,9 +60,8 @@ export const scrapeWalmartGrocery = async (search:any) => {
             numReviews: numReviews
             };
             products.push(scraped);
-
         });
-         console.log(products);
+        
         return new Promise((resolve, _reject) => {
             resolve(products[0]);
         });

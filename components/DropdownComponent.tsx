@@ -1,6 +1,11 @@
 import React from 'react';
 import { Dropdown } from '@nextui-org/react';
 
+type ddItemObj = {
+  key?: string;
+  name?: string;
+};
+
 export const DropdownComponent = ({
   ddType,
   ddItems
@@ -8,10 +13,7 @@ export const DropdownComponent = ({
   ddType: string;
   ddItems: { key: string; name: string }[];
 }) => {
-  type ddItemObj = {
-    key?: string;
-    name?: string;
-  };
+  
 
   const [selected, setSelected] = React.useState(new Set([ddItems[0].key]));
 
