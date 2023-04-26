@@ -6,20 +6,19 @@ import {useRouter} from 'next/router'
 const ProductPriceCard = ({name, price, rating, num_reviews, product_link, platform } : {name:string | undefined, price : string | undefined, rating : string | undefined, num_reviews : string | undefined, product_link : string | undefined, platform : string | undefined}) => {
 
   const posthog = usePostHog();
-    const router = useRouter();
 
-    function productPageVist() {
-      posthog?.capture(
-      'Product page visited',
-      {
-        name: name,
-        store: platform
-      })
-    }
+  function productPageVist() {
+    posthog?.capture(
+    'Product page visited',
+    {
+      name: name,
+      store: platform
+    })
+  }
 
-    function handleClick(){
-      window.open(product_link || "", '_blank');
-    }
+  function handleClick(){
+    window.open(product_link || "", '_blank');
+  }
 
   return (
     <div className="product-details card">

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Button, Text } from '@nextui-org/react';
 import { usePostHog } from 'posthog-js/react';
 import {useRouter} from 'next/router'

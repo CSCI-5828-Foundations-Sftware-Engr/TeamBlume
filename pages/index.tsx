@@ -88,7 +88,9 @@ const Home = () => {
                         {
                           (categories.length > 0 ? <> {
                             categories.map((item, index) => (
+                              <>
                               <CardComponent key={index} index={index || 0} id={item.id || 0} name={item.name || ""} />
+                              </>
                             ))
                           } </> : <>
                             <div className="flex flex-center">

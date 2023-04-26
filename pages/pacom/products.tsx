@@ -77,11 +77,7 @@ const Products = () => {
             {
                 session ? <Header session={session}/> : <></>
             }
-            <div className={'content-container'}
-                // style={
-                //     {padding: '50px 0 100px 0'}
-                // }
-            >
+            <div className={'content-container'}>
                 <div className="content">
                     <div className="">
                         <div className="product-grid">
