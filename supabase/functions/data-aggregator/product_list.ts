@@ -1,12 +1,12 @@
 // store static data in array
 
 export const GROCERY = {
-  1: 'sensodyne extra whitening',
-  2: 'Vaseline Intensive Care Cocoa Radiant Body Lotion',
-  3: 'Peets Coffee Big Bang',
-  4: 'whole milk 1 gal',
-  5: 'sara lee wheat bread',
-  6: 'chobani vanilla yoghurt 32oz'
+  13: 'sensodyne extra whitening',
+  14: 'Vaseline Intensive Care Cocoa Radiant Body Lotion',
+  15: 'Peets Coffee Big Bang',
+  16: 'whole milk 1 gal',
+  17: 'sara lee wheat bread',
+  18: 'chobani vanilla yoghurt 32oz'
 // deno-lint-ignore no-explicit-any
 } as any;
 

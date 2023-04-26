@@ -14,7 +14,7 @@ export const scrapeBestBuy = async (search: any) => {
       {
         headers: {
           'Accept-enconding': 'application/gzip',
-          'User-Agent': 'axiod 1.3.4'
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15'
         }
       }
     );
