@@ -58,6 +58,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/next.config.js ./next.config.js
 COPY --from=builder --chown=nextjs:nodejs /app/newrelic.js ./newrelic.js
 
 USER nextjs
-EXPOSE 3000
+EXPOSE 8080
+ENV PORT 8080
 
 CMD ["node", "-r", "@newrelic/next", "server.js"]

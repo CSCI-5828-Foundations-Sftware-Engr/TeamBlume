@@ -77,7 +77,6 @@ jobs:
             --project $CLOUD_RUN_PROJECT_ID \
             --set-env-vars "JWT_SECRET=$JWT_SECRET_SUP" \
             --set-env-vars "SUPABASE_SERVICE_KEY=$SUPABASE_SERVICE_KEY" \
-            --set-env-vars "PORT=3000" \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated \
