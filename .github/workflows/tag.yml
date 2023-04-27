@@ -4,6 +4,10 @@ on:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
+env:
+  CLOUD_RUN_PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
+  REPO_NAME: ${{ github.repository }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,13 +36,40 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/checkout@v3
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
         with:
-          path: pacom
-      - name: Deploy to staging
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_ACCESS_TOKEN }}
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          service_account: 'pacom-461@blume-384702.iam.gserviceaccount.com'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+      - name: Enable the necessary APIs and enable docker auth
         run: |
-          pwd 
-          cd pacom
-          vercel --prod -t $VERCEL_TOKEN --yes
+          gcloud services enable containerregistry.googleapis.com
+          gcloud services enable run.googleapis.com
+          gcloud --quiet auth configure-docker
+      - uses: actions/checkout@v3
+      - name: Build and tag image
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          docker build --build-arg NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL} --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY} --tag "gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA" .
+      - name: Push image to GCR
+        run: |
+          docker push gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA
+      - name: Deploy to prod
+        env:
+          JWT_SECRET_SUP: ${{ secrets.JWT_SECRET_SUP }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          gcloud components install beta --quiet
+          gcloud beta run deploy $REPO_NAME --image gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA \
+            --project $CLOUD_RUN_PROJECT_ID \
+            --set-env-vars "JWT_SECRET=$JWT_SECRET_SUP" \
+            --set-env-vars "SUPABASE_SERVICE_KEY=$SUPABASE_SERVICE_KEY" \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated \
+            --quiet
+      
