@@ -5,8 +5,8 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
 env:
-  CLOUD_RUN_PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
-  REPO_NAME: pacom
+  CLOUD_RUN_PROJECT_ID: blume-384702
+  REPO_NAME: blume
 
 jobs:
   build:
@@ -63,7 +63,7 @@ jobs:
           docker build --build-arg NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL} --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY} --tag "gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA" .
       - name: Push image to GCR
         run: |
-          docker push gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA
+          docker push "gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA"
       - name: Deploy to prod
         env:
           JWT_SECRET_SUP: ${{ secrets.JWT_SECRET_SUP }}
