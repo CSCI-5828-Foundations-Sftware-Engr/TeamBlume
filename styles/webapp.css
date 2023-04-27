@@ -12,6 +12,7 @@
     display: inline-block;
     margin-left: 20px;
     cursor: pointer;
+    color: #fff;
 }
   
 /* .logout {
@@ -92,6 +93,7 @@
   .product-details {
     padding: 1rem;
     text-align: center;
+    color: #fff;
   }
   
   .product-details h2 {

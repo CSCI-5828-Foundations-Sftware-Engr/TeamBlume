@@ -76,6 +76,7 @@ const Products = () => {
         .catch(error => console.error(error));
     }
 
+
     if (!session) {
       router.push('/');
     }

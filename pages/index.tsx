@@ -94,30 +94,23 @@ const Home = () => {
                     <div className="col-6 cat-button">
                       <Button onPress={redirectToCompare}>Start comparing</Button>
                     </div> */}
-              <div className="col-12 category-cards">
-                <div className="card-selector" id="card-selector">
-                  <div className="category-grid">
-                    <Grid.Container gap={2}>
-                      {categories.length > 0 ? (
-                        <>
-                          {' '}
-                          {categories.map((item, index) => (
-                            <CardComponent
-                              key={index}
-                              index={index || 0}
-                              id={item.id || 0}
-                              name={item.name || ''}
-                            />
-                          ))}{' '}
-                        </>
-                      ) : (
-                        <>
-                          <div className="flex flex-center">
-                            <Loading />
-                          </div>
-                        </>
-                      )}{' '}
-                    </Grid.Container>
+
+                <div className="col-12 category-cards">
+                  <div className="card-selector" id="card-selector">
+                    <div className="category-grid">
+                      <Grid.Container gap={23}>
+                        {
+                          (categories.length > 0 ? <> {
+                            categories.map((item, index) => (
+                              <CardComponent key={index} index={index || 0} id={item.id || 0} name={item.name || ""} />
+                            ))
+                          } </> : <>
+                            <div className="flex flex-center">
+                              <Loading />
+                            </div>
+                          </>)
+                        } </Grid.Container>
+                    </div>
                   </div>
                 </div>
               </div>
