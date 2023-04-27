@@ -63,7 +63,6 @@ const updatePrice = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const productID = parseInt(priceJSON.product_id);
 
-    const platforms = ['bestbuy', 'walmart', 'kingsoopers'];
 
     let acPlat;
     switch (true) {

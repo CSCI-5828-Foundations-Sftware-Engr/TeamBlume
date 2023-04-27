@@ -147,14 +147,12 @@ const comparePrice = async (
             PriceChange.product_id = item;
           }
 
-          // console.log(channel_name);
           //  await redis.del(channel_name);
+          await redis.set(channel_name, JSON.stringify(data));
           
         }
-       
       }
 
-      await redis.set(channel_name, JSON.stringify(data));
       if (PriceChange.product_id != '') {
         changed.push(PriceChange);
       }
