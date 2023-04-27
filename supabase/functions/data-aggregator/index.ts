@@ -74,8 +74,11 @@ const comparePrice = async (
     if (value) {
       const data = JSON.parse(JSON.stringify(value));
       for (const item of Object.keys(channel)) {
-        console.log(channel_name)
         if ( channel[item] != undefined) {
+
+          if(data[item] == undefined) {
+              data[item] = channel[item];
+          }else{
           
           if (channel[item]['price'] != undefined ) {
             PriceChange.platform = channel_name;
@@ -84,7 +87,7 @@ const comparePrice = async (
             channel[item]['price'].toString()
           );
           const old_price = await getPriceFromString(
-            data[item]['price'].toString()
+            data[item]['price'].toString()!
           )!;
 
           const old_image = data[item]['image'];
@@ -153,7 +156,7 @@ const comparePrice = async (
               PriceChange.product_id = item;
             }
           }
-          
+          }
         } else {
           console.log('Item is undefined');
         }
@@ -214,7 +217,6 @@ serve(async _req => {
       best_buy[item] = await scrapeBestBuy(ELECTRONICS[item]);
     }
 
-    console.log(kingsoopers)
 
     await comparePrice(walmart_grocery, redis, 'walmart_grocery');
     await comparePrice(walmart_electronics, redis, 'walmart_electronics');
