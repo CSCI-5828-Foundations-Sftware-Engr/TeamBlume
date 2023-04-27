@@ -135,7 +135,7 @@ const Home = () => {
                 <div className="col-12 category-cards">
                   <div className="card-selector" id="card-selector">
                     <div className="category-grid">
-                      <Grid.Container gap={2}>
+                      <Grid.Container gap={23}>
                         {
                           (categories.length > 0 ? <> {
                             categories.map((item, index) => (
