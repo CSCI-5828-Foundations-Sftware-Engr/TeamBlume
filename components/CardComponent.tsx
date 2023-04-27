@@ -13,7 +13,7 @@ export const CardComponent = ({
   name: string;
 }) => {
     return(
-        <div key={index} className="flex flex-row">
+        <div key={index} className="flex flex-row card-cat-component">
             <Spacer x={7} />
             <Grid>
                 <Card isPressable isHoverable

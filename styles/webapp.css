@@ -37,6 +37,10 @@
     display:block;
 }
 
+.nextui-user-name{
+  color: white;
+}
+
 .nav-buttons{
     float: right;
     margin-right: 1.5rem;
@@ -62,6 +66,13 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 2rem;
+  }
+
+  .product-page-price-grid {
+    margin: 0 10%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 5rem;
   }
   
   .product-card {
@@ -150,6 +161,7 @@
     align-items: center;
     margin-bottom: 10px;
     white-space: nowrap;
+    color: white;
   }
   .rating span:first-child {
     margin-right: 5px;
@@ -165,8 +177,8 @@
   .product-detail-img img{
     margin: auto;
     display: block;
-    width: 300px;
-    height: auto;
+    width: auto;
+    height: 250px;
   }
 
   .primary-cat-name{

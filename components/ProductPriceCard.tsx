@@ -23,7 +23,7 @@ const ProductPriceCard = ({name, price, rating, num_reviews, product_link, platf
   return (
     <div className="product-details card">
       <h3 className="platform">{platform}</h3>
-      <h2>${price}</h2>
+      <h2 className="product-price">${price}</h2>
       {( rating ? 
         <div className="rating">
           <span>Rating : {rating}</span>
