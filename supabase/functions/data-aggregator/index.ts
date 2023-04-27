@@ -74,31 +74,30 @@ const comparePrice = async (
     if (value) {
       const data = JSON.parse(JSON.stringify(value));
       for (const item of Object.keys(channel)) {
+        console.log(channel_name)
         if ( channel[item] != undefined) {
           
           if (channel[item]['price'] != undefined ) {
             PriceChange.platform = channel_name;
 
-            
+          const new_price = await getPriceFromString(
+            channel[item]['price'].toString()
+          );
+          const old_price = await getPriceFromString(
+            data[item]['price'].toString()
+          )!;
 
-            const new_price = await getPriceFromString(
-              channel[item]['price'].toString()
-            );
-            const old_price = await getPriceFromString(
-              data[item]['price'].toString()
-            )!;
+          const old_image = data[item]['image'];
+          const new_image = channel[item]['image'];
 
-            const old_image = data[item]['image'];
-            const new_image = channel[item]['image'];
+          const old_link = data[item]['link'];
+          const new_link = channel[item]['link'];
 
-            const old_link = data[item]['link'];
-            const new_link = channel[item]['link'];
+          const old_rating = data[item]['rating'];
+          const new_rating = channel[item]['rating'];
 
-            const old_rating = data[item]['rating'];
-            const new_rating = channel[item]['rating'];
-
-            const old_numReviews = data[item]['numReviews'];
-            const new_numReviews = channel[item]['numReviews'];
+          const old_numReviews = data[item]['numReviews'];
+          const new_numReviews = channel[item]['numReviews'];
 
             if (new_price != old_price && new_price != null) {
               console.log(
