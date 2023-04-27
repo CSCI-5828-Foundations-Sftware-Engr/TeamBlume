@@ -15,6 +15,26 @@ type NewRelicProps = {
   browserTimingHeader: string;
 };
 
+const newrelicDeps = [
+  '@newrelic/next',
+  'newrelic',
+  'semver',
+  'json-stringify-safe',
+  'readable-stream',
+  'inherits',
+  'util-deprecate',
+  'lru-cache',
+  'yallist',
+  'async',
+  'concat-stream',
+  'buffer-from',
+  'https-proxy-agent',
+  'debug',
+  'ms',
+  'agent-base',
+  '@tyriar/fibonacci-heap'
+];
+
 class MyDocument extends Document<NewRelicProps> {
   static async getInitialProps(
     ctx: DocumentContext
@@ -55,5 +75,11 @@ class MyDocument extends Document<NewRelicProps> {
     );
   }
 }
+
+export const config = {
+  unstable_includeFiles: newrelicDeps.map(
+    d => `node_modules/${d}/**/*.+(js|json)`
+  )
+};
 
 export default MyDocument;
