@@ -20,8 +20,6 @@ const Home = () => {
   type dataObj = {
     id?: number;
     name?: string;
-    inserted_at?: string;
-    updated_at?: string;
   };
 
   type ddItemObj = {
@@ -32,44 +30,25 @@ const Home = () => {
   const [session, setSession] = useState(useSession());
   const supabase = useSupabaseClient();
 
-  const [data, setData] = useState(null);
-
   const [categories, setCategories] = useState<dataObj[]>([]);
 
   if (session != sessionVar) {
     setSession(sessionVar);
   }
 
-  const catItems: dataObj[] = React.useMemo(() => [], []);
-  // let catItems: dataObj[] = [];
+  const catItems : dataObj[] = React.useMemo(() => [], [] )
 
   useEffect(() => {
-    fetch('/api/product/categories')
-      .then(response => response.json())
-      .then(json => {
-        setData(json);
-        // populateData(json.categories);
-        if (json.categories) {
-          for (let i = 0; i < json.categories.length; i++) {
-            catItems.push({
-              id: json.categories[i].id,
-              name: json.categories[i].name
-            });
+    fetch('/api/product/categories').then(response => response.json()).then(json => {
+      if (json.categories) {
+        for (let i = 0; i < json.categories.length; i++) {
+          catItems.push({ id: json.categories[i].id, name: json.categories[i].name });
           }
           setCategories(catItems);
         }
       })
       .catch(error => console.error(error));
   }, [catItems]);
-
-  function populateData(data: dataObj[]) {
-    if (data) {
-      for (let i = 0; i < data.length; i++) {
-        catItems.push({ id: data[i].id, name: data[i].name });
-      }
-      setCategories(catItems);
-    }
-  }
 
   return (
     <div>
@@ -94,39 +73,31 @@ const Home = () => {
                 />
               </div>
             </div>
-          ) : (
-            <div className="row">
-              <HomeContent logged={true} />
-              {/* <div className="col-6 category-dropdown">
-                      <DropdownComponent ddType={'category-dropdown'} ddItems={menuItems}/>
-                    </div>
-                    <div className="col-6 cat-button">
-                      <Button onPress={redirectToCompare}>Start comparing</Button>
-                    </div> */}
-              <div className="col-12 category-cards">
-                <div className="card-selector" id="card-selector">
-                  <div className="category-grid">
-                    <Grid.Container gap={23}>
-                      {categories.length > 0 ? (
-                        <>
-                          {' '}
-                          {categories.map((item, index) => (
-                            <CardComponent
-                              key={index}
-                              index={index || 0}
-                              id={item.id || 0}
-                              name={item.name || ''}
-                            />
-                          ))}{' '}
-                        </>
-                      ) : (
-                        <>
-                          <div className="flex flex-center">
-                            <Loading />
-                          </div>
-                        </>
-                      )}{' '}
-                    </Grid.Container>
+            ) : (
+              <div className="row">
+                <HomeContent logged={true} />
+                <div className="col-12 category-cards">
+                  <div className="card-selector" id="card-selector">
+                    <div className="category-grid">
+                      <Grid.Container gap={2}>
+                        {
+                          (categories.length > 0 ? <> {
+                            categories.map((item, index) => (
+                              <>
+                              <CardComponent
+                                key={index}
+                                index={index || 0}
+                                id={item.id || 0}
+                                name={item.name || ""}
+                              />
+                              </>
+                            ))
+                          } </> : <>
+                            <div className="flex flex-center">
+                              <Loading />
+                            </div>
+                          </>)
+                        } </Grid.Container>
                   </div>
                 </div>
               </div>

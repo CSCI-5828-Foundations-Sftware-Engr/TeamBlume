@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'next/router';
 
-import { Card, Grid, Text } from '@nextui-org/react';
+import { Card, Grid, Text, Spacer } from '@nextui-org/react';
 
 export const CardComponent = ({
   index,
@@ -12,33 +12,33 @@ export const CardComponent = ({
   id: number;
   name: string;
 }) => {
-  return (
-    <div key={index} className="flex flex-row">
-      <Grid>
-        <Card
-          isPressable
-          isHoverable
-          onPress={() => {
-            Router.push({
-              pathname: '/pacom/products',
-              query: {
-                catId: id
-              }
-            });
-          }}
-        >
-          <Card.Image
-            src={'/images/' + name.toLowerCase() + '.png'}
-            objectFit="cover"
-            width="fit-content"
-            height={200}
-            alt={name}
-          />
-          <Card.Footer>
-            <Text h2>{name}</Text>
-          </Card.Footer>
-        </Card>
-      </Grid>
-    </div>
-  );
-};
+    return(
+        <div key={index} className="flex flex-row">
+            <Spacer x={7} />
+            <Grid>
+                <Card isPressable isHoverable
+                onPress={
+                    () => {
+                    Router.push({
+                        pathname: '/pacom/products',
+                        query: {
+                        catId: id
+                        }
+                    });
+                    }
+                }>
+                <Card.Image
+                    src = {"/images/"+name.toLowerCase()+".png"}
+                    objectFit="cover"
+                    width="fit-content"
+                    height={300}
+                    alt={name}
+                    />
+                <Card.Footer>
+                    <Text h1 className="primary-cat-name">{name}</Text>
+                </Card.Footer>
+                </Card>
+            </Grid>
+            </div>
+    );
+}

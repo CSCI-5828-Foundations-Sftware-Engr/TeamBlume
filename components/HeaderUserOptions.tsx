@@ -5,30 +5,24 @@ import {
 } from '@supabase/auth-helpers-react';
 
 import AccountDetails from './AccountDetails';
+import AccountImage from './AccountImage';
 import { Database } from '../utils/database.types';
 
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
-import Link from 'next/link';
-// import { Link } from "react-router-dom";
-// import Link from "react-dom/client";
+import Link from 'next/link'
 
-import { Dropdown, Text, Grid, User } from '@nextui-org/react';
-import Account from '../pages/auth/Account';
+import { Dropdown, Text, Grid, User } from "@nextui-org/react";
 
 interface Props {
-  session: Session;
+    session : Session;
 }
 
 const HeaderUserOptions = ({ session }: Props) => {
   const supabase = useSupabaseClient<Database>();
   const accountDetails = AccountDetails({ session }) || '';
+  const avatarImg = AccountImage({avatar_url : (accountDetails.avatar_url!=null ? accountDetails.avatar_url : "")}) || "";
   const router = useRouter();
-
-  // function reloadAccountPage(){
-  //     console.log(<Account session={session} />);
-  //     document.getElementById('global-container').innerHTML = <Account session={session} />;
-  // }
 
   return (
     <Grid.Container justify="flex-start" gap={2}>
@@ -72,9 +66,7 @@ const HeaderUserOptions = ({ session }: Props) => {
                   Account
                 </div>
               </Link>
-              {/* <Link to="/auth/Account"><div color="inherit" className="header_dropdown_option">Account</div></Link> */}
-              {/* <div color="inherit" className="header_dropdown_option" onClick={()=>{}>Account 2</div> */}
-            </Dropdown.Item>
+              </Dropdown.Item>
             <Dropdown.Item
               key="logout"
               color="error"
