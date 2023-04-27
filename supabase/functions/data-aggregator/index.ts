@@ -1,164 +1,221 @@
 // deno-lint-ignore-file no-explicit-any
-import { scrapeBestBuy  } from "./best_buy.ts";   // <--- import the scrapeBestBuy function
-import { scrapeWalmart } from "./walmart_electronics.ts";
-import {scrapeWalmartGrocery} from "./walmart_grocery.ts";
-import { scrapeKingSoopers } from "./kingsoopers.ts";
-import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
-import { Redis } from 'https://deno.land/x/upstash_redis@v1.19.3/mod.ts'
+import { scrapeBestBuy } from './best_buy.ts'; // <--- import the scrapeBestBuy function
+import { scrapeWalmart } from './walmart_electronics.ts';
+import { scrapeWalmartGrocery } from './walmart_grocery.ts';
+import { scrapeKingSoopers } from './kingsoopers.ts';
+import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
+import { Redis } from 'https://deno.land/x/upstash_redis@v1.20.4/mod.ts';
 import { GROCERY, ELECTRONICS } from './product_list.ts';
-import "https://deno.land/std@0.184.0/dotenv/load.ts";
+import {
+  create,
+  getNumericDate,
+  Header
+} from 'https://deno.land/x/djwt@v2.8/mod.ts';
 
+const jwt_token = Deno.env.get('JWT_TOKEN')!;
+
+const encoder = new TextEncoder();
+const data = encoder.encode(jwt_token);
+
+const key = await crypto.subtle.importKey(
+  'raw',
+  data,
+  { name: 'HMAC', hash: 'SHA-256' },
+  true,
+  ['sign', 'verify']
+);
+
+const algorithm = 'HS256';
+
+const header: Header = {
+  alg: algorithm,
+  typ: 'JWT',
+  foo: 'bar' // custom header
+};
+
+const rest_token = await create(
+  header,
+  { foo: 'bar', exp: getNumericDate(600) },
+  key
+);
 
 // declare a function to get price from string
 const getPriceFromString = (str: string) => {
-    const price = str.slice(str.indexOf("$") + 1);
-    return parseFloat(price);
-}
+  const price = str.slice(str.indexOf('$') + 1);
+  console.log(price);
+  return parseFloat(price);
+};
 
+const comparePrice = async (channel: any, redis: Redis,channel_name:string) => {
 
-const comparePrice = (channel:any, redis:any) => {
+  console.log(channel_name);
+  type priceChange = {
+    product_id: string,
+    platform: string,
+    price: number,
+    product_link: string,
+    ratings: number,
+    numReviews: number,
+  };
+  const changed: priceChange[] = [];
 
-  const channels = ["walmart_grocery", "walmart_electronics", "bestbuy", "kingsoopers"]
-
-  for (const item of Object.keys(channel)){
-    
-    const channel_name = channel[item]["platform"];
-    redis.get(channel_name).then((value:any) => {
-      if (value) {
-        const data = JSON.parse(JSON.stringify(value));
-        const new_price = getPriceFromString((channel[item]["price"]).toString());
-        const old_price = getPriceFromString((data[item]["price"]).toString());
-
-        const old_image = data[item]["image"];
-        const new_image = channel[item]["image"];
-
-        const old_link = data[item]["link"];
-        const new_link = channel[item]["link"];
-
-        const old_rating = data[item]["rating"];
-        const new_rating = channel[item]["rating"];
-
-        const old_numReviews = data[item]["numReviews"];
-        const new_numReviews = channel[item]["numReviews"];
-
-        if( new_price != old_price && new_price != null){
-            console.log("Price updated for " + channel_name +" " + channel[item]["title"]);
-            data[item]["price"] = channel[item]["price"];
-         } 
-         else if( new_image != old_image && new_image != null){
-            console.log("Image updated" +" " + channel[item]["title"]);
-            data[item]["image"] = channel[item]["image"];
-          }
-          else if( new_link != old_link && new_link != null ){
-              console.log("Link updated for " + channel_name +" " + channel[item]["title"]);
-              data[item]["link"] = channel[item]["link"];
-            }    
-              else if( new_rating != old_rating && new_rating != null ){
-                  
-                  console.log("Rating updated for " + channel_name +" " + channel[item]["title"]);
-                  data[item]["rating"] = channel[item]["rating"];
-                }
-                else if( new_numReviews != old_numReviews && new_numReviews != null){
-
-                  console.log("Number of reviews updated for " + channel_name +" " + channel[item]["title"]);
-                  data[item]["numReviews"] = channel[item]["numReviews"];
-                }
-         else{
-
-              console.log("no change");
-         }
-      }
-      else {
-        redis.set(channel_name, JSON.stringify(channel));
-      }
-    });
-
+  const PriceChange: priceChange = {
+    product_id: "",
+    platform:"",
+    price: 0,
+    product_link: "",
+    ratings: 0,
+    numReviews: 0,
   }
 
-  // if(channel["1"]["platform"]){
-  // const channel_name = channel["1"]["platform"];
-  
-  // redis.get(channel_name).then((value:any) => {
-    
 
-  //   if (value) {
-      
-  //     const data = JSON.parse(JSON.stringify(value));
-  //     let old_price = (data["1"]["price"]).toString();
-  //     old_price = parseFloat(old_price.slice(old_price.indexOf("$") + 1));
+    await redis.get(channel_name).then(async (value: any) => {
 
-  //     for (const item of Object.keys(GROCERY)) {
-  //       const new_price = getPriceFromString((channel[item]["price"]).toString());
-  //       const old_price = getPriceFromString((data[item]["price"]).toString());
+      if (value) {
+        console.log("Value"+value);
 
-  //        if( new_price != old_price ){
-  //         //  console.log(item);
-  //           data[item]["price"] = channel[item]["price"];
-  //        } else{
+      for (const item of Object.keys(channel)) {
 
-  //             console.log("no change");
-  //        }
-
-  //     }
-      
-  //     redis.set(channel_name, JSON.stringify(data));
-  //     return new Response(JSON.stringify({ data }), { status: 200 })
-  //   }
-  
-  //   else {
-  //     redis.set(channel_name, JSON.stringify(channel));
-  //   }
-  //   });
-  // }
-}
-
-serve(async (_req) => {
-
-    try {
-        // //const env = config();
-        const redis = new Redis({
-        url: Deno.env.get('UPSTASH_URL')!,
-        token: Deno.env.get('UPSTASH_TOKEN')!,
-       
-      });
+        if(channel[item]['price'] != null){
+        
+        PriceChange.platform = channel_name;
      
-       //initialize an emptry object
-      const walmart_grocery = {} as any;
-      const walmart_electronics = {} as any;
-      const best_buy = {} as any;
-      const kingsoopers ={} as any;
+        const data = JSON.parse(JSON.stringify(value));
 
-      for (const item of Object.keys(GROCERY)) {
-      
-        walmart_grocery[item] = await scrapeWalmartGrocery(GROCERY[item]);
-        kingsoopers[item] = await scrapeKingSoopers(GROCERY[item]);
+        const new_price = await getPriceFromString(channel[item]['price'].toString());
+        const old_price = await getPriceFromString(data[item]['price'].toString())!;
 
-    }
+        const old_image = data[item]['image'];
+        const new_image = channel[item]['image'];
 
-      for(const item of Object.keys(ELECTRONICS)){
+        const old_link = data[item]['link'];
+        const new_link = channel[item]['link'];
 
-        walmart_electronics[item] = await scrapeWalmart(ELECTRONICS[item]);
-        best_buy[item] = await scrapeBestBuy(ELECTRONICS[item]);
+        const old_rating = data[item]['rating'];
+        const new_rating = channel[item]['rating'];
 
-      }
+        const old_numReviews = data[item]['numReviews'];
+        const new_numReviews = channel[item]['numReviews'];
 
-      console.log(kingsoopers);
-    //  console.log(walmart_grocery);
-    //  console.log(walmart_electronics);
-    //  console.log(best_buy);
+        
+        if (new_price != old_price && new_price != null) {
+          console.log(
+            'Price updated for ' + channel_name + ' ' + channel[item]['price']
+          );
+          data[item]['price'] = channel[item]['price'];
+          PriceChange.product_id = item;
+          PriceChange.price = new_price;
+        }
+          if (new_image != old_image && new_image != null) {
+          console.log('Image updated' + ' ' + channel[item]['title']);
+          data[item]['image'] = channel[item]['image'];
+          PriceChange.product_link = new_image;
+          PriceChange.product_id = item;
+        }
+          if (new_link != old_link && new_link != null) {
+          console.log(
+            'Link updated for ' + channel_name + ' ' + channel[item]['title']);
 
-        const walmart_grocery_data = await comparePrice(walmart_grocery, redis);
-        const walmart_electronics_data = await comparePrice(walmart_electronics, redis);
-        const best_buy_data = await comparePrice(best_buy, redis);
-        const kingsoopers_data = await comparePrice(kingsoopers, redis);
-
-       
-     //   console.log(walmart_grocery_data, walmart_electronics_data, best_buy_data);
+          data[item]['link'] = channel[item]['link'];
+          PriceChange.product_link = new_link;
+          PriceChange.product_id = item;
+        }
+          if (new_rating != old_rating && new_rating != null) {
+          console.log(
+            'Rating updated for ' + channel_name + ' ' + channel[item]['title']
+          );
  
-      return new Response(JSON.stringify({ walmart_grocery }), { status: 200 })
-    
-    } catch (error) {
-      return new Response(JSON.stringify({ error: error.message }), { status: 200 })
+          data[item]['rating'] = channel[item]['rating'];
+          PriceChange.ratings = new_rating;
+          PriceChange.product_id = item;
+        }
+          if (new_numReviews != old_numReviews && new_numReviews != null) {
+          console.log(
+            'Number of reviews updated for ' +
+              channel_name +
+              ' ' +
+              channel[item]['title']
+              
+          );
+          
+          data[item]['numReviews'] = channel[item]['numReviews'];
+          PriceChange.numReviews = new_numReviews;
+          PriceChange.product_id = item;
+        }
+       
+       // console.log(channel_name);
+      //  await redis.del(channel_name);
+        await redis.set(channel_name, JSON.stringify(data));
+        if(PriceChange.product_id!=""){
+        changed.push(PriceChange);
+      }
+        
+      } 
     }
-  })
 
+    console.log("Changed"+JSON.stringify(changed));
+    // call the api to send the changed data
+    if(changed.length>0){
+      //call the api to send the changed data
+      const response = await fetch('https://price-tracker-1.herokuapp.com/api/priceChange', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+
+          Authorization: 'Bearer ' + rest_token
+        },
+        body: JSON.stringify(changed)
+      });
+      const data = await response.json();
+      console.log(data);
+
+    }
+
+    }else {
+      console.log("Adding newly-----------------"+channel_name);
+      await redis.set(channel_name, JSON.stringify(channel));
+    }
+    });
+    
+  }
+
+
+serve(async _req => {
+  try {
+    // //const env = config();
+    const redis = new Redis({
+      url: Deno.env.get('UPSTASH_URL')!,
+      token: Deno.env.get('UPSTASH_TOKEN')!
+    });
+
+    //initialize an emptry object
+    const walmart_grocery = {} as any;
+    const walmart_electronics = {} as any;
+    const best_buy = {} as any;
+    const kingsoopers = {} as any;
+
+    for (const item of Object.keys(GROCERY)) {
+      walmart_grocery[item] = await scrapeWalmartGrocery(GROCERY[item]);
+      kingsoopers[item] = await scrapeKingSoopers(GROCERY[item]);
+    }
+
+    for (const item of Object.keys(ELECTRONICS)) {
+      walmart_electronics[item] = await scrapeWalmart(ELECTRONICS[item]);
+      best_buy[item] = await scrapeBestBuy(ELECTRONICS[item]);
+    }
+
+    console.log(walmart_grocery,walmart_electronics,best_buy,kingsoopers);
+
+    await comparePrice(walmart_grocery, redis,"walmart_grocery");
+    await comparePrice(walmart_electronics,redis,"walmart_electronics");
+    await comparePrice(best_buy, redis,"best_buy");
+    await comparePrice(kingsoopers, redis,"kingsoopers");
+
+
+    return new Response(JSON.stringify({ status:"All ok" }), { status: 200 });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 200
+    });
+  }
+});
