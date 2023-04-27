@@ -13,7 +13,7 @@ const updatePrice = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (
     !req.headers.authorization ||
-    req.headers.authorization.indexOf('Basic ') === -1
+    req.headers.authorization.indexOf('Bearer ') === -1
   ) {
     logger.error('Missing Authorization Header');
     res.status(401).json({ message: 'Missing Authorization Header' });
@@ -57,11 +57,16 @@ const updatePrice = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const reqs = changedArray.map(async priceJSON => {
     const acPrice = parseFloat(priceJSON.price);
+    if(acPrice === 0){
+      logger.info('Price is 0');
+      return;
+    }
     const productID = parseInt(priceJSON.product_id);
 
     const { data: price, error } = await supabase
       .from('prices')
-      .update({ price: acPrice, product_id: productID });
+      .update({ price: acPrice})
+      .eq('product_id', productID);
 
     if (error) {
       logger.error(error);

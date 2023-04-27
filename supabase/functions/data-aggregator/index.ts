@@ -42,7 +42,6 @@ const rest_token = await create(
 // declare a function to get price from string
 const getPriceFromString = (str: string) => {
   const price = str.slice(str.indexOf('$') + 1);
-  console.log(price);
   return parseFloat(price);
 };
 
@@ -150,25 +149,29 @@ const comparePrice = async (
 
           // console.log(channel_name);
           //  await redis.del(channel_name);
-          await redis.set(channel_name, JSON.stringify(data));
-          if (PriceChange.product_id != '') {
-            changed.push(PriceChange);
-          }
+          
         }
+       
       }
 
-      console.log('Changed' + JSON.stringify(changed));
+      await redis.set(channel_name, JSON.stringify(data));
+      if (PriceChange.product_id != '') {
+        changed.push(PriceChange);
+      }
+
       // call the api to send the changed data
       if (changed.length > 0) {
+        const api_data = { "changed":changed};
+        console.log(api_data);
         //call the api to send the changed data
-        const response = await fetch('http://localhost:3000/api/price/update', {
+        const response = await fetch('http://10.0.0.12:3000/api/price/update', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
 
             Authorization: 'Bearer ' + rest_token
           },
-          body: JSON.stringify(changed)
+          body: JSON.stringify(api_data)
         });
         const data = await response.json();
         console.log(data);
