@@ -59,4 +59,4 @@ COPY --from=builder --chown=nextjs:nodejs /app/newrelic.js ./newrelic.js
 
 USER nextjs
 
-CMD ["npm", "start"]
+CMD ["node", "-r", "@newrelic/next", "server.js"]
