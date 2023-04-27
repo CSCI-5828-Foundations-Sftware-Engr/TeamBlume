@@ -10,5 +10,6 @@ module.exports = {
         permanent: true
       }
     ];
-  }
+  },
+  output: 'standalone'
 };

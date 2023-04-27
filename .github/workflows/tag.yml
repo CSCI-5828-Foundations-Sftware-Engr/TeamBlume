@@ -52,7 +52,7 @@ jobs:
         run: |
           gcloud services enable containerregistry.googleapis.com
           gcloud services enable run.googleapis.com
-          gcloud --quiet auth configure-docker
+          gcloud --quiet auth configure-docker gcr.io
       - uses: actions/checkout@v3
       - name: Install deps
         run: |
