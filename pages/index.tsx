@@ -40,7 +40,7 @@ const Home = () => {
 
   useEffect(() => {
     fetch('/api/product/categories').then(response => response.json()).then(json => {
-      if (json.categories) {
+      if (catItems.length==0 && json.categories) {
         for (let i = 0; i < json.categories.length; i++) {
           catItems.push({ id: json.categories[i].id, name: json.categories[i].name });
           }

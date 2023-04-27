@@ -31,7 +31,7 @@ function MyApp({
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
   const theme = createTheme({
-    type: 'dark', // it could be "light" or "dark"
+    type: 'light', // it could be "light" or "dark"
     theme: {
       colors: {
         // brand colors
