@@ -170,17 +170,17 @@ const comparePrice = async (
       const api_data = { changed: changed };
       console.log(api_data);
       //call the api to send the changed data
-      // const response = await fetch('http://10.0.0.12:3000/api/price/update', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
+      const response = await fetch('http://10.0.0.12:3000/api/price/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
 
-      //     Authorization: 'Bearer ' + rest_token
-      //   },
-      //   body: JSON.stringify(api_data)
-      // });
-      // const data = await response.json();
-      // console.log(data);
+          Authorization: 'Bearer ' + rest_token
+        },
+        body: JSON.stringify(api_data)
+      });
+      const data = await response.json();
+      console.log(data);
     }
   });
 };
