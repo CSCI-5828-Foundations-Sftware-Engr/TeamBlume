@@ -28,6 +28,7 @@ jobs:
           cat .env
       - run: yarn test:all
       - run: yarn test:ci
+      - run: yarn component:headless
       - run: yarn build
   
   deploy:
