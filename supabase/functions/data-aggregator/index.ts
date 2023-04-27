@@ -50,7 +50,7 @@ const comparePrice = async (
   redis: Redis,
   channel_name: string
 ) => {
-  console.log(channel_name);
+
   type priceChange = {
     product_id: string;
     platform: string;
@@ -72,12 +72,14 @@ const comparePrice = async (
 
   await redis.get(channel_name).then(async (value: any) => {
     if (value) {
+      const data = JSON.parse(JSON.stringify(value));
       for (const item of Object.keys(channel)) {
-        if (channel[item] != undefined) {
-          if (channel[item]['price'] != null) {
+        if ( channel[item] != undefined) {
+          
+          if (channel[item]['price'] != undefined ) {
             PriceChange.platform = channel_name;
 
-            const data = JSON.parse(JSON.stringify(value));
+            
 
             const new_price = await getPriceFromString(
               channel[item]['price'].toString()
@@ -152,36 +154,40 @@ const comparePrice = async (
               PriceChange.product_id = item;
             }
           }
-          await redis.set(channel_name, JSON.stringify(data));
+          
         } else {
           console.log('Item is undefined');
         }
+      }
+
+      await redis.set(channel_name, JSON.stringify(data));
+      if (PriceChange.product_id != '') {
+        changed.push(PriceChange);
+      }
+  
+      // call the api to send the changed data
+      if (changed.length > 0) {
+        const api_data = { changed: changed };
+        console.log(api_data);
+        //call the api to send the changed data
+        const response = await fetch('https://blume-52sdbar5dq-uc.a.run.app/api/price/update', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+  
+            Authorization: 'Bearer ' + rest_token
+          },
+          body: JSON.stringify(api_data)
+        });
+        const data = await response.json();
+        console.log(data);
+  
       }
     } else {
       console.log('Adding newly-----------------' + channel_name);
       await redis.set(channel_name, JSON.stringify(channel));
     }
-    if (PriceChange.product_id != '') {
-      changed.push(PriceChange);
-    }
 
-    // call the api to send the changed data
-    if (changed.length > 0) {
-      const api_data = { changed: changed };
-      console.log(api_data);
-      //call the api to send the changed data
-      const response = await fetch('http://10.0.0.12:3000/api/price/update', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-
-          Authorization: 'Bearer ' + rest_token
-        },
-        body: JSON.stringify(api_data)
-      });
-      const data = await response.json();
-      console.log(data);
-    }
   });
 };
 
@@ -208,6 +214,8 @@ serve(async _req => {
       walmart_electronics[item] = await scrapeWalmart(ELECTRONICS[item]);
       best_buy[item] = await scrapeBestBuy(ELECTRONICS[item]);
     }
+
+    console.log(kingsoopers)
 
     await comparePrice(walmart_grocery, redis, 'walmart_grocery');
     await comparePrice(walmart_electronics, redis, 'walmart_electronics');
