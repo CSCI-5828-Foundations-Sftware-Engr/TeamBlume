@@ -62,6 +62,15 @@ const Home = () => {
       .catch(error => console.error(error));
   }, [catItems]);
 
+  function populateData(data: dataObj[]) {
+    if (data) {
+      for (let i = 0; i < data.length; i++) {
+        catItems.push({ id: data[i].id, name: data[i].name });
+      }
+      setCategories(catItems);
+    }
+  }
+
   return (
     <div>
       <Head>
@@ -94,23 +103,30 @@ const Home = () => {
                     <div className="col-6 cat-button">
                       <Button onPress={redirectToCompare}>Start comparing</Button>
                     </div> */}
-
-                <div className="col-12 category-cards">
-                  <div className="card-selector" id="card-selector">
-                    <div className="category-grid">
-                      <Grid.Container gap={23}>
-                        {
-                          (categories.length > 0 ? <> {
-                            categories.map((item, index) => (
-                              <CardComponent key={index} index={index || 0} id={item.id || 0} name={item.name || ""} />
-                            ))
-                          } </> : <>
-                            <div className="flex flex-center">
-                              <Loading />
-                            </div>
-                          </>)
-                        } </Grid.Container>
-                    </div>
+              <div className="col-12 category-cards">
+                <div className="card-selector" id="card-selector">
+                  <div className="category-grid">
+                    <Grid.Container gap={23}>
+                      {categories.length > 0 ? (
+                        <>
+                          {' '}
+                          {categories.map((item, index) => (
+                            <CardComponent
+                              key={index}
+                              index={index || 0}
+                              id={item.id || 0}
+                              name={item.name || ''}
+                            />
+                          ))}{' '}
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex flex-center">
+                            <Loading />
+                          </div>
+                        </>
+                      )}{' '}
+                    </Grid.Container>
                   </div>
                 </div>
               </div>

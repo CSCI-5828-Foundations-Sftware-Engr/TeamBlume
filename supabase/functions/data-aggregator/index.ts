@@ -149,7 +149,6 @@ const comparePrice = async (
 
           //  await redis.del(channel_name);
           await redis.set(channel_name, JSON.stringify(data));
-          
         }
       }
 
@@ -159,7 +158,7 @@ const comparePrice = async (
 
       // call the api to send the changed data
       if (changed.length > 0) {
-        const api_data = { "changed":changed};
+        const api_data = { changed: changed };
         console.log(api_data);
         //call the api to send the changed data
         const response = await fetch('http://10.0.0.12:3000/api/price/update', {
