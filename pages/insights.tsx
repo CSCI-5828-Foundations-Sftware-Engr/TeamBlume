@@ -51,10 +51,18 @@ export async function getServerSideProps(context:GetServerSidePropsContext) {
     // Return response as prop
   const response = await request.json()
   const insights_data = response.results[0].result
+  const labels = []
+  const values = []
   for(let i=0; i<insights_data.length; i++){
-    data.labels.push(insights_data[i].label);
-    data.datasets[0].data.push(insights_data[i].count);
+    labels.push(insights_data[i].label);
+    values.push(insights_data[i].count);
   }
+  const toplabels = labels.slice().sort((a, b) => values[labels.indexOf(b)] - values[labels.indexOf(a)]).slice(0, 3);
+  const topvalues = values.filter((d, i) => toplabels.includes(labels[i]));
+  console.log(topvalues)
+  console.log(toplabels)
+  data.labels = toplabels;
+  data.datasets[0].data = topvalues;
   return {
     props: {
       data
