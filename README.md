@@ -1,6 +1,12 @@
 # PACom [![Build](https://github.com/CSCI-5828-Foundations-Sftware-Engr/TeamBlume/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/CSCI-5828-Foundations-Sftware-Engr/TeamBlume/actions/workflows/main.yml)
 
-Price comparator and aggregator for products from different retailers like Walmart, Best Buy, Amazon, Costco etc.
+Price comparator and aggregator for products from different retailers like Walmart, Best Buy, Kingsoopers etc.
+
+## Architecture Diagram
+
+
+![ArchiDiag drawio](https://user-images.githubusercontent.com/32598162/234934136-2f0d4e86-2769-43be-912b-20b2e57e89d4.png)
+
 
 ## Getting Started
 

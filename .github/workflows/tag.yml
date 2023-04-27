@@ -39,6 +39,7 @@ jobs:
       contents: 'read'
       id-token: 'write'
     steps:
+      - uses: actions/checkout@v3
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
         env:
@@ -52,15 +53,21 @@ jobs:
         run: |
           gcloud services enable containerregistry.googleapis.com
           gcloud services enable run.googleapis.com
-          gcloud --quiet auth configure-docker
-      - uses: actions/checkout@v3
+          gcloud --quiet auth configure-docker gcr.io
+      - name: Install deps
+        run: |
+          yarn
       - name: Build and tag image
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
+          NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
+          NEXT_POSTHOG_PERSONAL_KEY: ${{ secrets.NEXT_POSTHOG_PERSONAL_KEY }}
+          NEXT_PUBLIC_POSHOG_ID: ${{ secrets.NEXT_PUBLIC_POSHOG_ID }}
         run: |
           echo ${NEXT_PUBLIC_SUPABASE_URL}
-          docker build --build-arg NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL} --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY} --tag "gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA" .
+          docker build --build-arg NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL} --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY} --build-arg NEXT_PUBLIC_POSTHOG_KEY=${NEXT_PUBLIC_POSTHOG_KEY} --build-arg NEXT_PUBLIC_POSTHOG_HOST=${NEXT_PUBLIC_POSTHOG_HOST} --build-arg NEXT_POSTHOG_PERSONAL_KEY=${NEXT_POSTHOG_PERSONAL_KEY} --build-arg NEXT_PUBLIC_POSHOG_ID=${NEXT_PUBLIC_POSHOG_ID} --tag "gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA" .
       - name: Push image to GCR
         run: |
           docker push "gcr.io/$CLOUD_RUN_PROJECT_ID/$REPO_NAME:$GITHUB_SHA"

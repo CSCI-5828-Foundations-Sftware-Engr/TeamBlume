@@ -27,35 +27,26 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED 1
 ARG NEXT_PUBLIC_SUPABASE_URL
 ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ARG NEXT_PUBLIC_POSTHOG_KEY
+ARG NEXT_PUBLIC_POSTHOG_HOST
+ARG NEXT_POSTHOG_PERSONAL_KEY
+ARG NEXT_PUBLIC_POSHOG_ID
+
 ENV NEXT_TELEMETRY_DISABLED 1
+RUN echo $NEXT_PUBLIC_SUPABASE_URL
 ENV NEXT_PUBLIC_SUPABASE_URL $NEXT_PUBLIC_SUPABASE_URL
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY $NEXT_PUBLIC_SUPABASE_ANON_KEY
+ENV NEXT_PUBLIC_POSTHOG_KEY $NEXT_PUBLIC_POSTHOG_KEY
+ENV NEXT_PUBLIC_POSTHOG_HOST $NEXT_PUBLIC_POSTHOG_HOST
+ENV NEXT_POSTHOG_PERSONAL_KEY $NEXT_POSTHOG_PERSONAL_KEY
+ENV NEXT_PUBLIC_POSHOG_ID $NEXT_PUBLIC_POSHOG_ID
+
 ENV NEXT_PUBLIC_API_MOCKING enabled
 RUN yarn build
 
-# If using npm comment out above and use below instead
-# RUN npm run build
-
-# Production image, copy all the files and run next
-FROM base AS runner
-WORKDIR /app
-
-ENV NODE_ENV production
-# Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/next.config.js ./next.config.js
-COPY --from=builder --chown=nextjs:nodejs /app/newrelic.js ./newrelic.js
-
 USER nextjs
 
-CMD ["npm", "start"]
+EXPOSE 8080
+ENV PORT 8080
+
+CMD ["yarn", "start"]

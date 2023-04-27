@@ -50,7 +50,7 @@ const comparePrice = async (
   redis: Redis,
   channel_name: string
 ) => {
-  console.log(channel_name);
+
   type priceChange = {
     product_id: string;
     platform: string;
@@ -72,13 +72,13 @@ const comparePrice = async (
 
   await redis.get(channel_name).then(async (value: any) => {
     if (value) {
-      console.log('Value' + value);
-
+      const data = JSON.parse(JSON.stringify(value));
       for (const item of Object.keys(channel)) {
-        if (channel[item]['price'] != null) {
-          PriceChange.platform = channel_name;
-
-          const data = JSON.parse(JSON.stringify(value));
+        console.log(channel_name)
+        if ( channel[item] != undefined) {
+          
+          if (channel[item]['price'] != undefined ) {
+            PriceChange.platform = channel_name;
 
           const new_price = await getPriceFromString(
             channel[item]['price'].toString()
@@ -99,84 +99,94 @@ const comparePrice = async (
           const old_numReviews = data[item]['numReviews'];
           const new_numReviews = channel[item]['numReviews'];
 
-          if (new_price != old_price && new_price != null) {
-            console.log(
-              'Price updated for ' + channel_name + ' ' + channel[item]['price']
-            );
-            data[item]['price'] = channel[item]['price'];
-            PriceChange.product_id = item;
-            PriceChange.price = new_price;
-          }
-          if (new_image != old_image && new_image != null) {
-            console.log('Image updated' + ' ' + channel[item]['title']);
-            data[item]['image'] = channel[item]['image'];
-            PriceChange.product_link = new_image;
-            PriceChange.product_id = item;
-          }
-          if (new_link != old_link && new_link != null) {
-            console.log(
-              'Link updated for ' + channel_name + ' ' + channel[item]['title']
-            );
+            if (new_price != old_price && new_price != null) {
+              console.log(
+                'Price updated for ' +
+                  channel_name +
+                  ' ' +
+                  channel[item]['price']
+              );
+              data[item]['price'] = channel[item]['price'];
+              PriceChange.product_id = item;
+              PriceChange.price = new_price;
+            }
+            if (new_image != old_image && new_image != null) {
+              console.log('Image updated' + ' ' + channel[item]['title']);
+              data[item]['image'] = channel[item]['image'];
+              PriceChange.product_link = new_image;
+              PriceChange.product_id = item;
+            }
+            if (new_link != old_link && new_link != null) {
+              console.log(
+                'Link updated for ' +
+                  channel_name +
+                  ' ' +
+                  channel[item]['title']
+              );
 
-            data[item]['link'] = channel[item]['link'];
-            PriceChange.product_link = new_link;
-            PriceChange.product_id = item;
-          }
-          if (new_rating != old_rating && new_rating != null) {
-            console.log(
-              'Rating updated for ' +
-                channel_name +
-                ' ' +
-                channel[item]['title']
-            );
+              data[item]['link'] = channel[item]['link'];
+              PriceChange.product_link = new_link;
+              PriceChange.product_id = item;
+            }
+            if (new_rating != old_rating && new_rating != null) {
+              console.log(
+                'Rating updated for ' +
+                  channel_name +
+                  ' ' +
+                  channel[item]['title']
+              );
 
-            data[item]['rating'] = channel[item]['rating'];
-            PriceChange.ratings = new_rating;
-            PriceChange.product_id = item;
-          }
-          if (new_numReviews != old_numReviews && new_numReviews != null) {
-            console.log(
-              'Number of reviews updated for ' +
-                channel_name +
-                ' ' +
-                channel[item]['title']
-            );
+              data[item]['rating'] = channel[item]['rating'];
+              PriceChange.ratings = new_rating;
+              PriceChange.product_id = item;
+            }
+            if (new_numReviews != old_numReviews && new_numReviews != null) {
+              console.log(
+                'Number of reviews updated for ' +
+                  channel_name +
+                  ' ' +
+                  channel[item]['title']
+              );
 
-            data[item]['numReviews'] = channel[item]['numReviews'];
-            PriceChange.numReviews = new_numReviews;
-            PriceChange.product_id = item;
+              data[item]['numReviews'] = channel[item]['numReviews'];
+              PriceChange.numReviews = new_numReviews;
+              PriceChange.product_id = item;
+            }
           }
-
-          //  await redis.del(channel_name);
-          await redis.set(channel_name, JSON.stringify(data));
+          
+        } else {
+          console.log('Item is undefined');
         }
       }
 
+      await redis.set(channel_name, JSON.stringify(data));
       if (PriceChange.product_id != '') {
         changed.push(PriceChange);
       }
-
+  
       // call the api to send the changed data
       if (changed.length > 0) {
         const api_data = { changed: changed };
         console.log(api_data);
         //call the api to send the changed data
-        const response = await fetch('http://10.0.0.12:3000/api/price/update', {
+        const response = await fetch('https://blume-52sdbar5dq-uc.a.run.app/api/price/update', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-
+  
             Authorization: 'Bearer ' + rest_token
           },
           body: JSON.stringify(api_data)
         });
         const data = await response.json();
         console.log(data);
+  
       }
     } else {
       console.log('Adding newly-----------------' + channel_name);
       await redis.set(channel_name, JSON.stringify(channel));
     }
+
   });
 };
 
@@ -204,7 +214,7 @@ serve(async _req => {
       best_buy[item] = await scrapeBestBuy(ELECTRONICS[item]);
     }
 
-    console.log(walmart_grocery, walmart_electronics, best_buy, kingsoopers);
+    console.log(kingsoopers)
 
     await comparePrice(walmart_grocery, redis, 'walmart_grocery');
     await comparePrice(walmart_electronics, redis, 'walmart_electronics');
