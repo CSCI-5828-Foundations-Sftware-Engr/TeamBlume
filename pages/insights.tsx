@@ -25,7 +25,9 @@ export default function Insights({data }:ChartProps) {
 }
 
 export async function getServerSideProps(context:GetServerSidePropsContext) {
-  const url = `${process.env.NEXT_PUBLIC_POSTHOG_HOST}/api/projects/${process.env.NEXT_PUBLIC_POSHOG_ID}/insights?short_id=QYJfD25z`;
+  const category_url = ['qqkanfAM', '35FqvuL1']
+//   OLD_ID = QYJfD25z
+  const url = `${process.env.NEXT_PUBLIC_POSTHOG_HOST}/api/projects/${process.env.NEXT_PUBLIC_POSHOG_ID}/insights?short_id=${category_url[0]}`;
 
   const request = await fetch(url, {
     method: 'GET',
@@ -48,7 +50,6 @@ export async function getServerSideProps(context:GetServerSidePropsContext) {
 
     // Return response as prop
   const response = await request.json()
-
   const insights_data = response.results[0].result
   for(let i=0; i<insights_data.length; i++){
     data.labels.push(insights_data[i].label);

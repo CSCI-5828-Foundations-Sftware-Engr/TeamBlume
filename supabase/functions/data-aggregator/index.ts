@@ -181,6 +181,7 @@ const comparePrice = async (
       });
       const data = await response.json();
       console.log(data);
+
     }
   });
 };
@@ -208,6 +209,7 @@ serve(async _req => {
       walmart_electronics[item] = await scrapeWalmart(ELECTRONICS[item]);
       best_buy[item] = await scrapeBestBuy(ELECTRONICS[item]);
     }
+
 
     await comparePrice(walmart_grocery, redis, 'walmart_grocery');
     await comparePrice(walmart_electronics, redis, 'walmart_electronics');
