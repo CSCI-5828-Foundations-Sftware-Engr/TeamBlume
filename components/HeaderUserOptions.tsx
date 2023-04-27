@@ -34,6 +34,7 @@ const HeaderUserOptions = ({ session }: Props) => {
               as="button"
               size="lg"
               color="primary"
+              src={avatarImg ? avatarImg : ''}
               name={accountDetails ? accountDetails.username : ''}
               text={session.user.email?.charAt(0)}
             />
@@ -57,7 +58,7 @@ const HeaderUserOptions = ({ session }: Props) => {
             </Dropdown.Item>
             <Dropdown.Item
               key="account"
-              color="primary"
+              color="secondary"
               withDivider
               textValue="account edit page"
             >

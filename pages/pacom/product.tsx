@@ -12,7 +12,6 @@ import {Loading} from '@nextui-org/react';
 
 
 import {useSession} from '@supabase/auth-helpers-react';
-import Image from 'next/image';
 
 const Product = () => {
 
@@ -111,10 +110,11 @@ const Product = () => {
                                 <img src={product.img_link} alt={product.product_name}/>
                             </div>
                         </div>
-                        <div className="product-grid">
+                        <div className="product-page-grid">
                             {
                             (productPrices.length > 0 ? <> {
                                 productPrices.map((item, index) => (
+                                    <>
                                     <div key={index}
                                         className="flex flex-row">
                                             <ProductPriceCard key={index}
@@ -125,6 +125,7 @@ const Product = () => {
                                                 product_link={item.product_link}
                                                 platform={item.platform}/>
                                     </div>
+                                    </>
                                 ))
                             } </> : <>
                                 <div className="flex flex-center">
