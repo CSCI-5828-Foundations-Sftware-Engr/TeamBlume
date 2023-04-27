@@ -34,7 +34,7 @@ const ProductCard = ({imageSrc, brand, name, productId, categoryId } : {imageSrc
             <h3>{brand}</h3>
             <h2>{name}</h2>
 
-            <Button as='a' onPress={productVist} onClick={handleClick} auto>
+            <Button as='a' onPress={productVist} onClick={handleClick} className='cat-product-button' auto>
               <Text h1 size="$3x1">View Product</Text>
             </Button>
           </div>

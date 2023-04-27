@@ -68,7 +68,7 @@
     grid-gap: 2rem;
   }
 
-  .product-page-grid {
+  .product-page-price-grid {
     margin: 0 10%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);

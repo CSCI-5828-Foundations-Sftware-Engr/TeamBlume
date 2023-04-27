@@ -110,7 +110,7 @@ const Product = () => {
                                 <img src={product.img_link} alt={product.product_name}/>
                             </div>
                         </div>
-                        <div className="product-page-grid">
+                        <div className="product-page-price-grid">
                             {
                             (productPrices.length > 0 ? <> {
                                 productPrices.map((item, index) => (
