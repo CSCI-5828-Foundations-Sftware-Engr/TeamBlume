@@ -57,16 +57,36 @@ const updatePrice = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const reqs = changedArray.map(async priceJSON => {
     const acPrice = parseFloat(priceJSON.price);
-    if(acPrice === 0){
+    if (acPrice === 0) {
       logger.info('Price is 0');
       return;
     }
     const productID = parseInt(priceJSON.product_id);
 
+    const platforms = ['bestbuy', 'walmart', 'kingsoopers'];
+
+    let acPlat;
+    switch (true) {
+      case priceJSON.platform.includes('best'):
+        acPlat = 'bestbuy';
+        break;
+      case priceJSON.platform.includes('walmart'):
+        acPlat = 'walmart';
+        break;
+      case priceJSON.platform.includes('king'):
+        acPlat = 'kingsoopers';
+        break;
+      default:
+        logger.error('no platform matched');
+        res.status(500).json({ message: 'no platform matched' });
+        return;
+    }
+
     const { data: price, error } = await supabase
       .from('prices')
-      .update({ price: acPrice})
-      .eq('product_id', productID);
+      .update({ price: acPrice })
+      .eq('product_id', productID)
+      .eq('platform', acPlat);
 
     if (error) {
       logger.error(error);
