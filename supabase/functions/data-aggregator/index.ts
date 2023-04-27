@@ -151,39 +151,36 @@ const comparePrice = async (
               PriceChange.numReviews = new_numReviews;
               PriceChange.product_id = item;
             }
-
-            //  await redis.del(channel_name);
-            await redis.set(channel_name, JSON.stringify(data));
           }
+          await redis.set(channel_name, JSON.stringify(data));
         } else {
           console.log('Item is undefined');
-        }
-
-        if (PriceChange.product_id != '') {
-          changed.push(PriceChange);
-        }
-
-        // call the api to send the changed data
-        if (changed.length > 0) {
-          const api_data = { changed: changed };
-          console.log(api_data);
-          //call the api to send the changed data
-          // const response = await fetch('http://10.0.0.12:3000/api/price/update', {
-          //   method: 'POST',
-          //   headers: {
-          //     'Content-Type': 'application/json',
-
-          //     Authorization: 'Bearer ' + rest_token
-          //   },
-          //   body: JSON.stringify(api_data)
-          // });
-          // const data = await response.json();
-          // console.log(data);
         }
       }
     } else {
       console.log('Adding newly-----------------' + channel_name);
       await redis.set(channel_name, JSON.stringify(channel));
+    }
+    if (PriceChange.product_id != '') {
+      changed.push(PriceChange);
+    }
+
+    // call the api to send the changed data
+    if (changed.length > 0) {
+      const api_data = { changed: changed };
+      console.log(api_data);
+      //call the api to send the changed data
+      // const response = await fetch('http://10.0.0.12:3000/api/price/update', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+
+      //     Authorization: 'Bearer ' + rest_token
+      //   },
+      //   body: JSON.stringify(api_data)
+      // });
+      // const data = await response.json();
+      // console.log(data);
     }
   });
 };
@@ -211,8 +208,6 @@ serve(async _req => {
       walmart_electronics[item] = await scrapeWalmart(ELECTRONICS[item]);
       best_buy[item] = await scrapeBestBuy(ELECTRONICS[item]);
     }
-
-    console.log(kingsoopers);
 
     await comparePrice(walmart_grocery, redis, 'walmart_grocery');
     await comparePrice(walmart_electronics, redis, 'walmart_electronics');
