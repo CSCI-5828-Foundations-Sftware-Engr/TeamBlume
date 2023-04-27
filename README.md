@@ -50,3 +50,6 @@ docker run -p 3000:3000 teamblume
 - [Supabase](https://supabase.io/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [TypeScript](https://www.typescriptlang.org/)
+
+### Additional details
+[Wiki](https://github.com/CSCI-5828-Foundations-Sftware-Engr/5828_s23/wiki/PACom)
