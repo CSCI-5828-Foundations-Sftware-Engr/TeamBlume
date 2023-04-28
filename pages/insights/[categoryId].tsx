@@ -1,7 +1,7 @@
 // pages/insights.tsx
 //import { Card, Text, Metric, Title, LineChart } from "@tremor/react";
 import { GetServerSidePropsContext } from 'next';
-import BarChart from '../components/BarChart'
+import BarChart from '../../components/BarChart'
 
 type dataObj = {
     labels?: any[];
@@ -25,10 +25,12 @@ export default function Insights({data }:ChartProps) {
 }
 
 export async function getServerSideProps(context:GetServerSidePropsContext) {
-  const category_url = ['qqkanfAM', '35FqvuL1']
-//   OLD_ID = QYJfD25z
-  const url = `${process.env.NEXT_PUBLIC_POSTHOG_HOST}/api/projects/${process.env.NEXT_PUBLIC_POSHOG_ID}/insights?short_id=${category_url[0]}`;
+  const categoryId = Number(context.query.categoryId) || 0;
+  const categoryUrls = ['qqkanfAM', '35FqvuL1'];
+  const categoryUrl = categoryId >= categoryUrls.length ? categoryUrls[0] : categoryUrls[categoryId];
 
+//   OLD_ID = QYJfD25z
+  const url = `${process.env.NEXT_PUBLIC_POSTHOG_HOST}/api/projects/${process.env.NEXT_PUBLIC_POSHOG_ID}/insights?short_id=${categoryUrl}`;
   const request = await fetch(url, {
     method: 'GET',
     headers: {
