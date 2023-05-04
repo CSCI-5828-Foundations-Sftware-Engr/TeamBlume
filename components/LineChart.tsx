@@ -73,6 +73,8 @@ type LineChartProps = {
 //TODO: Take data as Input
 const LineChart = ({trendsData} : {trendsData : trendsObj}) => {
 
+  console.log(trendsData);
+
   
   const data = {
     labels: [] as string[],
