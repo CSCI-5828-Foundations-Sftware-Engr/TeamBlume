@@ -71,8 +71,9 @@ type LineChartProps = {
 
 
 //TODO: Take data as Input
-const LineChart = ({trendsData} : {LineChartProps}) => {
-  console.log(trendsData);
+const LineChart = ({trendsData} : {trendsData : trendsObj}) => {
+
+  
   const data = {
     labels: [] as string[],
     datasets: [
@@ -86,12 +87,11 @@ const LineChart = ({trendsData} : {LineChartProps}) => {
   const labels: string[] = []
   const values: number[] = []
   const platforms: string[] = []
-  for(let i=0; i<trendsData.platform.length; i++){
-      platforms.push(trendsData.platform[i]);
+  // for(let i=0; i<trendsData.platform.length; i++){
+  //     platforms.push(trendsData.platform![i]);
 //     labels.push(insights_data[i].label);
 //     values.push(insights_data[i].count);
-  }
-  console.log(platforms);
+  // }
 //   data.labels = labels.slice().sort((a, b) => values[labels.indexOf(b)] - values[labels.indexOf(a)]).slice(0, 3);
 //   data.datasets[0].data = values.filter((d, i) => data.labels.includes(labels[i]));
 

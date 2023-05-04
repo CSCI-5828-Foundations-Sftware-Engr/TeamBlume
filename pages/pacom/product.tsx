@@ -51,11 +51,12 @@ const Product = () => {
     };
     const catItem : datObj = React.useMemo(() => ({}), [] );
     const priceItmes : priceObj[] = React.useMemo(() => [], [] );
+
     const trendsItems: trendsObj = React.useMemo(() => ({
-      price: [],
-      inserted_at: [],
-      platform: [],
-    }), []);
+        price: [],
+        inserted_at: [],
+        platform: []
+    }), [] );
 
     useEffect(() => {
 
@@ -94,15 +95,18 @@ const Product = () => {
             fetch('/api/priceHistory/' + queryObj.prId).then(response => response.json()).then(json => {
 
                 if (json.prices_trends) {
+                    
                     for (let i = 0; i < json.prices_trends.length; i++) {
-                        trendsItems.price.push(json.prices_trends[i].price);
-                        trendsItems.inserted_at.push(json.prices_trends[i].inserted_at);
-                        trendsItems.platform.push(json.prices_trends[i].platform ?. toString());
+                        trendsItems.price?.push(json.prices_trends[i].price);
+                        trendsItems.inserted_at?.push(json.prices_trends[i].inserted_at);
+                        trendsItems.platform?.push(json.prices_trends[i].platform ?. toString());
                     }
+
                     setPriceTrends(trendsItems);
                 }
 
             }).catch(error => console.error(error));
+            
         }
 
         if (!session) {
@@ -160,7 +164,7 @@ const Product = () => {
                         <div className="product-trends-grid">
                             <h2 className="product-Trends-title">PriceTrends</h2>
                             <div className="product-trends-graph">
-                                <LineChart data={priceTrends} />
+                                <LineChart trendsData={priceTrends} />
                             </div>
                         </div>
                     </div>
