@@ -2,6 +2,9 @@
 
 Price comparator and aggregator for products from different retailers like Walmart, Best Buy, Kingsoopers etc.
 
+## Deep Dive Wiki
+[Detailed Wiki](https://github.com/CSCI-5828-Foundations-Sftware-Engr/5828_s23/wiki/PACom#project-rubric-submissions)
+
 ## Architecture Diagram
 
 
@@ -50,6 +53,3 @@ docker run -p 3000:3000 teamblume
 - [Supabase](https://supabase.io/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [TypeScript](https://www.typescriptlang.org/)
-
-### Additional details
-[Wiki](https://github.com/CSCI-5828-Foundations-Sftware-Engr/5828_s23/wiki/PACom)
