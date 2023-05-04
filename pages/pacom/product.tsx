@@ -2,7 +2,7 @@ import {useRouter} from 'next/router'
 import React, {useEffect, useState} from 'react';
 
 import ProductPriceCard from '../../components/ProductPriceCard';
-
+import LineChart from '../../components/LineChart';
 import Head from 'next/head';
 
 import Header from '../../components/Header';
@@ -23,6 +23,7 @@ const Product = () => {
 
     const [product, setProduct] = useState < datObj > ({});
     const [productPrices, setProductPrices] = useState < priceObj[] > ([]);
+    const [priceTrends, setPriceTrends] = useState < trendsObj > ({});
 
     if (session != sessionVar) {
         setSession(sessionVar);
@@ -43,8 +44,18 @@ const Product = () => {
         brand?: string;
     };
 
+    type trendsObj = {
+          price?: any[];
+          inserted_at?: any[];
+          platform?: string[];
+    };
     const catItem : datObj = React.useMemo(() => ({}), [] );
     const priceItmes : priceObj[] = React.useMemo(() => [], [] );
+    const trendsItems: trendsObj = React.useMemo(() => ({
+      price: [],
+      inserted_at: [],
+      platform: [],
+    }), []);
 
     useEffect(() => {
 
@@ -79,16 +90,28 @@ const Product = () => {
                 }
 
             }).catch(error => console.error(error));
+
+            fetch('/api/priceHistory/' + queryObj.prId).then(response => response.json()).then(json => {
+
+                if (json.prices_trends) {
+                    for (let i = 0; i < json.prices_trends.length; i++) {
+                        trendsItems.price.push(json.prices_trends[i].price);
+                        trendsItems.inserted_at.push(json.prices_trends[i].inserted_at);
+                        trendsItems.platform.push(json.prices_trends[i].platform ?. toString());
+                    }
+                    setPriceTrends(trendsItems);
+                }
+
+            }).catch(error => console.error(error));
         }
 
         if (!session) {
             router.push("/");
         }
 
-    }, [queryObj, router, session, catItem, priceItmes]);
+    }, [queryObj, router, session, catItem, priceItmes, trendsItems]);
 
-
-
+    console.log(product.brand)
     return (
         <>
             <Head>
@@ -105,7 +128,7 @@ const Product = () => {
                                 <div className="product-detail-brand">
                                     <p>{product.brand}</p>
                                 </div>
-                            </div>  
+                            </div>
                             <div className="product-detail-img">
                                 <img src={product.img_link} alt={product.product_name}/>
                             </div>
@@ -132,7 +155,13 @@ const Product = () => {
                                     <Loading/>
                                 </div>
                             </>)
-                        } 
+                        }
+                        </div>
+                        <div className="product-trends-grid">
+                            <h2 className="product-Trends-title">PriceTrends</h2>
+                            <div className="product-trends-graph">
+                                <LineChart data={priceTrends} />
+                            </div>
                         </div>
                     </div>
                 </div>
