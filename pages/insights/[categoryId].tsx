@@ -17,7 +17,7 @@ type ChartProps = {
 export default function Insights({data }:ChartProps) {
   return (
     <>
-      <div>
+      <div className='barChart'>
         <BarChart data={data} />
       </div>
     </>
@@ -26,7 +26,7 @@ export default function Insights({data }:ChartProps) {
 
 export async function getServerSideProps(context:GetServerSidePropsContext) {
   const categoryId = Number(context.query.categoryId) || 0;
-  const categoryUrls = ['qqkanfAM', '35FqvuL1'];
+  const categoryUrls = ['35FqvuL1','qqkanfAM'];
   const categoryUrl = categoryId >= categoryUrls.length ? categoryUrls[0] : categoryUrls[categoryId];
 
 //   OLD_ID = QYJfD25z
