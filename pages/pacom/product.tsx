@@ -95,7 +95,7 @@ const Product = () => {
             fetch('/api/priceHistory/' + queryObj.prId).then(response => response.json()).then(json => {
 
                 if (json.prices_trends) {
-                    
+
                     for (let i = 0; i < json.prices_trends.length; i++) {
                         trendsItems.price?.push(json.prices_trends[i].price);
                         trendsItems.inserted_at?.push(json.prices_trends[i].inserted_at);
@@ -106,7 +106,7 @@ const Product = () => {
                 }
 
             }).catch(error => console.error(error));
-            
+
         }
 
         if (!session) {
@@ -115,7 +115,6 @@ const Product = () => {
 
     }, [queryObj, router, session, catItem, priceItmes, trendsItems]);
 
-    console.log(product.brand)
     return (
         <>
             <Head>

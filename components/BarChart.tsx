@@ -13,7 +13,6 @@ type BarChartProps = {
   data: dataObj;
 };
 
-//TODO: Take data as Input
 const BarChart = ({data}:BarChartProps) => {
 
   return(
