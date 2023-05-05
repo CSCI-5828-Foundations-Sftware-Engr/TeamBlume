@@ -185,6 +185,19 @@
     margin: auto;
   }
 
+  .trends-iframe{
+    margin-top: 50px;
+    display: block;  
+    width: 100%;  
+    height: 100vh;
+    border: none; 
+  }
+
+  .barChart-container{
+    height: auto;
+    width: 80%;
+  }
+
   @media only screen and (min-width: 768px) {
     .card {
       display: flex;

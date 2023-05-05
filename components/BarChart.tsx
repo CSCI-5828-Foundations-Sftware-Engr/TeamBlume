@@ -13,13 +13,12 @@ type BarChartProps = {
   data: dataObj;
 };
 
-//TODO: Take data as Input
 const BarChart = ({data}:BarChartProps) => {
 
   return(
-    <div>
+    <div className='barChart-container'>
         <h2>Trends</h2>
-        <Bar data={data as any} width={400} height={400} />
+        <Bar data={data as any}/>
       </div>
   );
 };

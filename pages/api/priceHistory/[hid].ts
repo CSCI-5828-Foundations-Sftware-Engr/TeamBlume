@@ -8,17 +8,19 @@ const getPriceHistories = async (req: NextApiRequest, res: NextApiResponse) => {
     req,
     res
   });
-
-  const { data: prices_histories, error } = await supabaseServerClient
-    .from('prices_histories')
-    .select('*');
+  const { hid } = req.query;
+  const { data: prices_trends, error } = await supabaseServerClient
+    .from('prices_trends')
+    .select()
+    .eq('product_id', hid);
 
   if (error) {
     logger.error(error);
     res.status(500).json({ error });
+    return;
   }
-
-  res.status(200).json({ prices_histories });
+  logger.info(`Success ${prices_trends}`);
+  res.status(200).json({ prices_trends });
 };
 
 export default getPriceHistories;

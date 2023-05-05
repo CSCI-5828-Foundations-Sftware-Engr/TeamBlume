@@ -37,6 +37,8 @@ const Products = () => {
         brand?: string;
     };
 
+    const insightsUrl = "/insights/" + queryObj.catId ?. toString();
+
     const catItems : datObj[] = React.useMemo(() => [], [] );
 
     useEffect(() => {
@@ -110,9 +112,7 @@ const Products = () => {
                         } </div>
                     </div>
                     <div className="flex-end flex"></div>
-                    {/* <div>
-                      <LineChart />
-                    </div> */}
+                        <iframe className="trends-iframe" src={insightsUrl} scrolling="no"></iframe>
                 </div>
             </div>
             <Footer/>
