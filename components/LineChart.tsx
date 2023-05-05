@@ -66,7 +66,7 @@ const LineChart = ({ trendsData }: LineChartProps) => {
   console.log(data);
   return (
     <div>
-      <Line data={data} width={400} height={400} />
+      <Line data={data} width={10} height={5} />
     </div>
   );
 };
